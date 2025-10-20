@@ -6,6 +6,11 @@ import { Label } from "./ui/label";
 import { useForm, Controller, type SubmitHandler } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { FormValidationError } from "./customComponents/common/formValidationError";
+import { useMutation } from "@tanstack/react-query";
+import { login } from "@/service/apis";
+import { toast } from "sonner";
+import type { CustomError } from "@/types/error";
+import { useNavigate } from "react-router-dom";
 
 export function Login() {
   
@@ -17,9 +22,22 @@ export function Login() {
     resolver: yupResolver(loginSchema),
 
   });
+  const navigate = useNavigate();
+  const loginResponse = useMutation<LoginResponse, CustomError, ILogin>({
+    mutationFn: (payload) => login(payload),
+    onSuccess: (data) => {
+      console.log("Login Success:", data);
+      toast.success(data?.message);
+      localStorage.setItem("accessToken", data?.data?.token);
+      navigate("/");
+    },
+    onError: (error) => {
+      toast.error(error?.response?.data?.message)
+    }
+  })
 
-  const onSubmit: SubmitHandler<Login> = async (data) => {
-    console.log(data)
+  const onSubmit: SubmitHandler<ILogin> = (data) => {
+    loginResponse.mutate(data);
   }
 
   return (
@@ -57,8 +75,8 @@ export function Login() {
                 />
                 {errors?.password && <FormValidationError message={errors?.password?.message} />}
                 </div>
-                <Button type="submit" className="w-full cursor-pointer">
-                Login
+                <Button type="submit" className="w-full cursor-pointer" disabled={loginResponse.isLoading}>
+                  Login
                 </Button>
             </div>
             </form>
