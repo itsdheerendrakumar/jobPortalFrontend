@@ -26,7 +26,7 @@ export function Job() {
       >
         <DialogContent className="overflow-y-auto h-full">
           <DialogHeader>
-            <DialogTitle>Create new reviewer</DialogTitle>
+            <DialogTitle>Create new job</DialogTitle>
           </DialogHeader>
           <NewJob />
         </DialogContent>
