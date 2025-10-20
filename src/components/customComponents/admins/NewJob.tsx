@@ -6,33 +6,10 @@ import * as yup from "yup"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
-import { Checkbox } from "@/components/ui/checkbox"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { FormValidationError } from "../common/formValidationError"
-
-// ✅ Validation schema
-const jobSchema = yup.object({
-  jobTitle: yup.string().required("Job title is required"),
-  companyName: yup.string().required("Company name is required"),
-  jobType: yup.string().required("Select job type"),
-  category: yup.string().required("Select category"),
-  vacancies: yup
-    .number()
-    .typeError("Vacancies must be a number")
-    .positive("Must be positive")
-    .integer("Must be an integer")
-    .required("Vacancies required"),
-  salaryMin: yup.number().typeError("Enter min salary").required("Min salary required"),
-  salaryMax: yup.number().typeError("Enter max salary").required("Max salary required"),
-  location: yup.string().required("Location is required"),
-  isRemote: yup.boolean().default(false),
-  education: yup.string().required("Education required"),
-  experience: yup.string().required("Experience required"),
-  skills: yup.string().required("Enter at least one skill"),
-  description: yup.string().required("Description required"),
-  applicationDeadline: yup.string().required("Deadline required"),
-})
+import { jobSchema } from "@/formValidation/validation"
 
 type JobForm = yup.InferType<typeof jobSchema>
 
@@ -42,13 +19,11 @@ export  function NewJob() {
   const {
     register,
     handleSubmit,
-    setValue,
-    watch,
     formState: { errors },
   } = useForm<JobForm>({
     resolver: yupResolver(jobSchema),
     defaultValues: {
-      isRemote: false,
+      
     },
   })
 
@@ -60,13 +35,8 @@ export  function NewJob() {
 
   return (
     <Card className="max-w-3xl mx-auto shadow-lg">
-      <CardHeader>
-        <CardTitle className="text-xl font-semibold">Create New Job</CardTitle>
-      </CardHeader>
-
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-          {/* Basic Info */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
             <div className="flex flex-col gap-2">
               <Label htmlFor="jobTitle">Job Title</Label>
@@ -105,7 +75,6 @@ export  function NewJob() {
             </div>
           </div>
 
-          {/* Salary & Vacancies */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="flex flex-col gap-2">
               <Label htmlFor="vacancies">Vacancies</Label>
@@ -126,22 +95,11 @@ export  function NewJob() {
             </div>
           </div>
 
-          {/* Location & Remote */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="flex flex-col gap-2">
               <Label htmlFor="location">Location</Label>
               <Input id="location" {...register("location")} placeholder="New Delhi, India" />
               {errors?.location && <FormValidationError message={errors.location?.message}/>}
-            </div>
-
-            <div className="flex items-center space-x-2 mt-6">
-              {/* ✅ Correct way to handle shadcn checkbox with RHF */}
-              <Checkbox
-                id="isRemote"
-                checked={watch("isRemote")}
-                onCheckedChange={(checked) => setValue("isRemote", checked === true)}
-              />
-              <Label htmlFor="isRemote">Remote Job</Label>
             </div>
           </div>
 
@@ -166,7 +124,6 @@ export  function NewJob() {
             </div>
           </div>
 
-          {/* Description */}
           <div className="flex flex-col gap-2">
             <Label htmlFor="description">Description</Label>
             <Textarea
@@ -177,14 +134,12 @@ export  function NewJob() {
             {errors?.description && <FormValidationError message={errors.description?.message}/>}
           </div>
 
-          {/* Deadline */}
           <div className="flex flex-col gap-2">
             <Label htmlFor="applicationDeadline">Application Deadline</Label>
             <Input type="date" id="applicationDeadline" {...register("applicationDeadline")} />
             {errors?.applicationDeadline && <FormValidationError message={errors.applicationDeadline?.message}/>}
           </div>
 
-          {/* Submit Button */}
           <Button type="submit" disabled={loading} className="w-full">
             {loading ? "Posting..." : "Create Job"}
           </Button>
