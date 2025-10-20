@@ -2,8 +2,21 @@ import { Button } from "@/components/ui/button";
 import { Divider } from "./Divider";
 import { adminEndPoints } from "@/constants/superAdmin";
 import { Link, NavLink } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { getProfile } from "@/service/apis";
+import type { CustomError } from "@/types/error";
+import { useProfileStore } from "@/store/profile";
+import { useEffect } from "react";
 
 export function Sidebar() {
+
+    const {name, profileImage, role, updateProfile} = useProfileStore();
+    console.log(name, profileImage, role)
+    const profile = useMutation<ProfileResponse, CustomError>({
+        mutationFn: getProfile,
+        onSuccess: (data) => {updateProfile(data.data.name, data.data.imageUrl || "", data.data.role)},
+    })
+    useEffect(() => {profile.mutate()}, [])
     return (
         <div className="flex flex-col gap-2.5  justify-between h-full boreder-solid border-sidebar-ring">
             <div className="flex flex-col gap-2.5">
@@ -11,9 +24,9 @@ export function Sidebar() {
                     <Link to="/"><span className="text-lg">jobPortal</span></Link>
                     <Divider />
                 </div>
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center gap-2.5">
                     <span>Welcome</span>
-                    <span>name</span>
+                    <span className="text-ellipsis max-w-[50%]">{name}</span>
                 </div>
                 {adminEndPoints.map((path) => (
                     <NavLink
