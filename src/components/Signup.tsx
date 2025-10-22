@@ -11,7 +11,7 @@ import { countryData } from "@/constants/country";
 import { useState } from "react";
 import { Checkbox } from "./ui/checkbox";
 import { useProfileStore } from "@/store/profile";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { CustomError } from "@/types/error";
 import { createNewAdmin } from "@/service/apis";
 import { toast } from "sonner";
@@ -22,6 +22,7 @@ interface SignupProps {
 export function Signup({ isCreateAdmin }: SignupProps) {
 
     const {role} = useProfileStore();
+    const queryClient = useQueryClient();
     const [deletePermission, setDeletePermission] = useState(true);
     const { control, handleSubmit, reset , formState: { errors }, } = useForm({
         defaultValues: {
@@ -46,6 +47,7 @@ export function Signup({ isCreateAdmin }: SignupProps) {
         onSuccess:(data) => {
             toast.success(data?.message)
             reset();
+            queryClient.invalidateQueries({queryKey: ["admin-listing", "super-admin-metrics"]})
         }
     })
     const loading = newAdminResponse.isPending;

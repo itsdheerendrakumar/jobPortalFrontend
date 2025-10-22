@@ -21,6 +21,16 @@ export const getSuperAdminMetrics = async () => {
 }
 
 export const getAdminListing = async () => {
-    const res = await api.get("user/admin-listing");
+    const res = await api.get("/user/admin-listing");
+    return res.data;
+}
+
+export const updateAdminStatus = async (payload: UpdateAdminStatusPayload) => {
+    const res = await api.patch("/user/admin-status", payload);
+    return res.data;
+}
+
+export const deleteAdmin = async (adminId: string) => {
+    const res = await api.delete(`/user/admin/${adminId}`);
     return res.data;
 }

@@ -10,7 +10,6 @@ import { Signup } from "@/components/Signup";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getSuperAdminMetrics } from "@/service/apis";
-import { useProfileStore } from "@/store/profile";
 import type { CustomError } from "@/types/error";
 export const adminData: IAdminUserDetails[] = [
     {
@@ -56,13 +55,11 @@ export const adminData: IAdminUserDetails[] = [
 ];
 export default function Home() {
   
-  const {role} = useProfileStore()
   const {data, isLoading, isError} = useQuery<MetricsResponse, CustomError>({
     queryKey: ["super-admin-metrics"],
     queryFn: () => getSuperAdminMetrics(),
     staleTime: 0,
     gcTime: 0,
-    enabled: ["superAdmin", "admin", "reviewer"].includes(role),
   })
   const [isOpen, setIsOpen] = useState(false);
   const handleIsOpen = () => {

@@ -12,11 +12,12 @@ interface ISignup extends ILogin {
 type UserRole = "superAdmin" | "admin" | "reviewer" | "user" | ""
 
 interface IAdminUserDetails {
+    _id: string
     name: string
     email: string
     phone: string
     country: string
-    created: string
+    createdAt: string
     status: "active" | "inactive"
 }
 
@@ -51,8 +52,15 @@ interface AdminReviewerListingData {
   createdAt: string
   updatedAt: string
 }
+
+interface UpdateAdminStatusPayload {
+    status: "active" | "inactive"
+    adminId: string
+}
+
 type LoginResponse = ApiResponse<LoginData>
 type ProfileResponse = ApiResponse<ProfileData>
 type NewAdminResponse = ApiResponse<{}>
 type MetricsResponse = ApiResponse<MetricsData>
 type AdminReviewerListingResponse = ApiResponse<IAdminUserDetails[]>
+type EmptyDataResponse = ApiResponse<{}>
