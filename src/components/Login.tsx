@@ -11,6 +11,7 @@ import { login } from "@/service/apis";
 import { toast } from "sonner";
 import type { CustomError } from "@/types/error";
 import { useNavigate } from "react-router-dom";
+import  { ButtonLoading } from "./customComponents/common/ButtonLoader";
 
 export function Login() {
   
@@ -75,8 +76,8 @@ export function Login() {
                 />
                 {errors?.password && <FormValidationError message={errors?.password?.message} />}
                 </div>
-                <Button type="submit" className="w-full cursor-pointer" disabled={loginResponse.isLoading}>
-                  Login
+                <Button type="submit" className="w-full cursor-pointer" disabled={loginResponse.isPending}>
+                  {loginResponse.isPending ? <ButtonLoading /> : "Login"}
                 </Button>
             </div>
             </form>
