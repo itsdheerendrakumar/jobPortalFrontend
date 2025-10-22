@@ -10,7 +10,7 @@ import { useEffect } from "react";
 
 export function Sidebar() {
 
-    const {name, profileImage, role, updateProfile} = useProfileStore();
+    const {name, profileImage, role, updateProfile, logout} = useProfileStore();
     console.log(name, profileImage, role)
     const profile = useMutation<ProfileResponse, CustomError>({
         mutationFn: getProfile,
@@ -38,7 +38,7 @@ export function Sidebar() {
                     </NavLink>
                 ))}
             </div>
-            <Button className="w-full">Logout</Button>
+            <Button className="w-full" onClick={logout}>Logout</Button>
         </div>
     )
 }

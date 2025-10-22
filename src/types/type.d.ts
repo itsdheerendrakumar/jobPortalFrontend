@@ -3,11 +3,13 @@ interface ILogin {
     password: string
 }
 
-interface Signup extends ILogin {
+interface ISignup extends ILogin {
     name?: string
     phone?: string
     country?: string
+    
 }
+type UserRole = "superAdmin" | "admin" | "reviewer" | "user" | ""
 
 interface IAdminUserDetails {
     name: string
@@ -29,9 +31,28 @@ interface LoginData  {
 
 interface ProfileData {
     name: string
-    role: string
+    role: UserRole
     imageUrl: string | null
 }
 
+interface MetricsData {
+    admin: number
+    reviewer: number
+    user: number
+}
+interface AdminReviewerListingData {
+  _id: string
+  name: string
+  email: string
+  phone: string
+  country: string
+  role: string
+  deletePermission: boolean
+  createdAt: string
+  updatedAt: string
+}
 type LoginResponse = ApiResponse<LoginData>
 type ProfileResponse = ApiResponse<ProfileData>
+type NewAdminResponse = ApiResponse<{}>
+type MetricsResponse = ApiResponse<MetricsData>
+type AdminReviewerListingResponse = ApiResponse<IAdminUserDetails[]>

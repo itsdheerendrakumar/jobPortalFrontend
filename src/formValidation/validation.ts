@@ -5,16 +5,17 @@ export const loginSchema = yup
     email: yup.string().email().required(),
     password: yup.string().required(),
   })
-  .required()
+
 export const signupSchema = yup
   .object({
     email: yup.string().email().required(),
-    password: yup.string().required(),
-    name: yup.string().required(),
-    phone: yup.string().required(),
-    country: yup.string().required(),
+    password: yup.string().trim().min(6).max(15).trim().required(),
+    name: yup.string().trim().min(2).max(20).matches(/^[A-Za-z ]+$/).required(),
+    phone: yup.string().trim().min(4).max(13).matches(/^[0-9]+$/).required(),
+    country: yup.string().trim().max(40).required(),
   })
-  .required()
+  
+
 
   export const jobSchema = yup.object({
     jobTitle: yup.string().required("Job title is required"),

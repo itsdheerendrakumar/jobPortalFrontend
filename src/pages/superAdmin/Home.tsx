@@ -8,6 +8,10 @@ import { adminHeaders } from "@/constants/superAdmin";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Signup } from "@/components/Signup";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getSuperAdminMetrics } from "@/service/apis";
+import { useProfileStore } from "@/store/profile";
+import type { CustomError } from "@/types/error";
 export const adminData: IAdminUserDetails[] = [
     {
         name: "Dheerendra Kumar",
@@ -51,7 +55,15 @@ export const adminData: IAdminUserDetails[] = [
     },
 ];
 export default function Home() {
-
+  
+  const {role} = useProfileStore()
+  const {data, isLoading, isError} = useQuery<MetricsResponse, CustomError>({
+    queryKey: ["super-admin-metrics"],
+    queryFn: () => getSuperAdminMetrics(),
+    staleTime: 0,
+    gcTime: 0,
+    enabled: ["superAdmin", "admin", "reviewer"].includes(role),
+  })
   const [isOpen, setIsOpen] = useState(false);
   const handleIsOpen = () => {
     setIsOpen(!isOpen)
@@ -68,23 +80,27 @@ export default function Home() {
       <div className="grid grid-cols-4 gap-4">
         <MetricCard 
           label="Total Admins"
-          value={5}
+          value={data?.data?.admin || 0}
           icon={<User />}
+          loading={isLoading}
         />
         <MetricCard 
           label="Total Reviewers"
-          value={5}
+          value={data?.data?.reviewer || 0}
           icon={<User />}
+          loading={isLoading}
         />
         <MetricCard 
           label="Total Users"
-          value={5}
+          value={data?.data?.user || 0}
           icon={<User />}
+          loading={isLoading}
         />
         <MetricCard 
           label="Total Pending Applications"
           value={5}
           icon={<User />}
+          loading={isLoading}
         />
       </div>
       <Tabs defaultValue="admins" className="mt-4">
