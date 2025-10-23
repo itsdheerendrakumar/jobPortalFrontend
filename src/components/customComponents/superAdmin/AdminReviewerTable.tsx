@@ -100,7 +100,7 @@ export function AdminReviewerTable({headers}: AdminTableProps) {
                                         [&>.active]:text-chart-2 [&>.inactive]:text-destructive`}
                                 >
                                     <Button 
-                                        disabled={updateAdminStatusMutation.isPending} 
+                                        disabled={updateAdminStatusMutation.isPending || deleteAdminMutation.isPending} 
                                         variant="secondary" 
                                         className="cursor-pointer"
                                         onClick={() => updateAdminStatusMutation.mutate({
@@ -115,7 +115,7 @@ export function AdminReviewerTable({headers}: AdminTableProps) {
                                     </Button>
                                     <Button 
                                         variant="secondary" 
-                                        disabled={deleteAdminMutation.isPending} 
+                                        disabled={updateAdminStatusMutation.isPending || deleteAdminMutation.isPending} 
                                         onClick={() => deleteAdminMutation.mutate(admin?._id)}
                                         className="cursor-pointer [&>*]:color-red-500"
                                     >

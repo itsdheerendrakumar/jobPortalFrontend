@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { FormValidationError } from "../common/formValidationError"
 import { jobSchema } from "@/formValidation/validation"
-
+import {jobType} from "@/constants"
 type JobForm = yup.InferType<typeof jobSchema>
 
 export  function NewJob() {
@@ -58,12 +58,7 @@ export  function NewJob() {
                 className="w-full border rounded-md p-2 bg-background"
               >
                 <option value="">Select type</option>
-                <option value="Full-time">Full-time</option>
-                <option value="Part-time">Part-time</option>
-                <option value="Internship">Internship</option>
-                <option value="Contract">Contract</option>
-                <option value="Remote">Remote</option>
-                <option value="Freelance">Freelance</option>
+                 {jobType.map(type => (<option value={type} key={type}>{type}</option>))}
               </select>
               {errors?.jobType && <FormValidationError message={errors.jobType?.message}/>}
             </div>

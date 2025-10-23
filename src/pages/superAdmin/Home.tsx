@@ -8,9 +8,7 @@ import { adminHeaders } from "@/constants/superAdmin";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Signup } from "@/components/Signup";
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { getSuperAdminMetrics } from "@/service/apis";
-import type { CustomError } from "@/types/error";
+import { useMetrics } from "@/hooks/useMetrics";
 export const adminData: IAdminUserDetails[] = [
     {
         name: "Dheerendra Kumar",
@@ -54,13 +52,7 @@ export const adminData: IAdminUserDetails[] = [
     },
 ];
 export default function Home() {
-  
-  const {data, isLoading, isError} = useQuery<MetricsResponse, CustomError>({
-    queryKey: ["super-admin-metrics"],
-    queryFn: () => getSuperAdminMetrics(),
-    staleTime: 0,
-    gcTime: 0,
-  })
+  const {data, isLoading, isError} = useMetrics();
   const [isOpen, setIsOpen] = useState(false);
   const handleIsOpen = () => {
     setIsOpen(!isOpen)

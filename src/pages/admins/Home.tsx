@@ -12,10 +12,11 @@ import { adminHeaders } from "@/constants/superAdmin";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Signup } from "@/components/Signup";
 import { useState } from "react";
+import { useMetrics } from "@/hooks/useMetrics";
 export default function Home() {
 
   const [isOpen, setIsOpen] = useState(false);
-
+  const {data, isLoading, isError} = useMetrics();
   const handleIsOpen = () => {
     setIsOpen(!isOpen);
   }
@@ -29,21 +30,30 @@ export default function Home() {
         </Button>
       </div>
       <Divider />
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-4 gap-4">
+        <MetricCard 
+          label="Total Admins"
+          value={data?.data?.admin ?? 0}
+          icon={<User />}
+          loading={isLoading}
+        />
         <MetricCard 
           label="Total Reviewers"
-          value={5}
+          value={data?.data?.reviewer ?? 0}
           icon={<User />}
+          loading={isLoading}
         />
         <MetricCard 
           label="Total Users"
-          value={5}
+          value={data?.data?.user ?? 0}
           icon={<User />}
+          loading={isLoading}
         />
         <MetricCard 
           label="Total Pending Applications"
           value={5}
           icon={<User />}
+          loading={isLoading}
         />
       </div>
       <Tabs defaultValue="newApplication" className="mt-4">
