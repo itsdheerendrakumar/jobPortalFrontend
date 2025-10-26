@@ -1,22 +1,16 @@
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import { Login } from "./components/Login";
 import { Signup } from "./components/Signup";
 import { superAdminRoutes } from "./routes/superAdmin";
 import { adminRoutes } from "./routes/admin";
 import { Toaster } from "sonner";
-import { useEffect } from "react";
 import { useProfileStore } from "./store/profile";
 
 export default function App() {
 
-    const {role} = useProfileStore();
-    const navigate = useNavigate()
-    useEffect(() => {
-      if(!localStorage.getItem("accessToken"))
-        navigate("/login")
-    }, [])
-
+  const {role} = useProfileStore();
+    
   return (
     <>
       <Toaster 
