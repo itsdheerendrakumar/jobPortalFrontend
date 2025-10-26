@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { useForm } from "react-hook-form"
+import { Controller, useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 
@@ -10,7 +10,8 @@ import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { FormValidationError } from "../common/formValidationError"
 import { jobSchema } from "@/formValidation/validation"
-import {jobType} from "@/constants"
+import {jobCategory, jobType} from "@/constants"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 type JobForm = yup.InferType<typeof jobSchema>
 
 export  function NewJob() {
@@ -19,6 +20,7 @@ export  function NewJob() {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<JobForm>({
     resolver: yupResolver(jobSchema),
@@ -50,22 +52,47 @@ export  function NewJob() {
               {errors?.companyName && <FormValidationError message={errors.companyName?.message}/>}
             </div>
 
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 [&>button]:w-full">
               <Label htmlFor="jobType">Job Type</Label>
-              <select
-                id="jobType"
-                {...register("jobType")}
-                className="w-full border rounded-md p-2 bg-background"
-              >
-                <option value="">Select type</option>
-                 {jobType.map(type => (<option value={type} key={type}>{type}</option>))}
-              </select>
+              <Controller
+                name="jobType"
+                control={control}
+                render={({ field }) => 
+                <Select onValueChange={field.onChange} value={field.value}>
+                    <SelectTrigger>
+                        <SelectValue placeholder="Select job type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {jobType.map((type) => (
+                            <SelectItem key={type} value={type}>
+                                {type}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>}
+              />
               {errors?.jobType && <FormValidationError message={errors.jobType?.message}/>}
             </div>
 
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 [&>button]:w-full">
               <Label htmlFor="category">Category</Label>
-              <Input id="category" {...register("category")} placeholder="IT / Marketing / Sales" />
+              <Controller
+                name="category"
+                control={control}
+                render={({ field }) => 
+                <Select onValueChange={field.onChange} value={field.value}>
+                    <SelectTrigger>
+                        <SelectValue placeholder="Category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {jobCategory.map((ctg) => (
+                            <SelectItem key={ctg.value} value={ctg.value}>
+                                {ctg.label}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>}
+              />
               {errors?.category && <FormValidationError message={errors.category?.message}/>}
             </div>
           </div>
