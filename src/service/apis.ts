@@ -1,3 +1,4 @@
+import type { JobForm } from "@/types/inferType";
 import {api} from "./apiInstance"
 
 export const login = async (payload: ILogin) => {
@@ -32,5 +33,15 @@ export const updateAdminStatus = async (payload: UpdateAdminStatusPayload) => {
 
 export const deleteAdmin = async (adminId: string) => {
     const res = await api.delete(`/user/admin/${adminId}`);
+    return res.data;
+}
+
+export const createJob = async (payload: JobForm) => {
+    const res = await api.post("/job", payload);
+    return res.data;
+}
+
+export const getJob = async () => {
+    const res = await api.get("/job");
     return res.data;
 }

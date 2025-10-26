@@ -1,8 +1,6 @@
 import { useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
-import * as yup from "yup"
-
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
@@ -12,11 +10,17 @@ import { FormValidationError } from "../common/formValidationError"
 import { jobSchema } from "@/formValidation/validation"
 import {jobCategory, jobType} from "@/constants"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-type JobForm = yup.InferType<typeof jobSchema>
+import type { JobForm } from "@/types/inferType"
+import { useMutation } from "@tanstack/react-query"
+import { createJob } from "@/service/apis"
+import type { CustomError } from "@/types/error"
+
 
 export  function NewJob() {
   const [loading, setLoading] = useState(false)
-
+  const jobMutation = useMutation<any, CustomError, JobForm>({
+    mutationFn: (payload) => createJob(payload)
+  })
   const {
     register,
     handleSubmit,
@@ -30,9 +34,7 @@ export  function NewJob() {
   })
 
   const onSubmit = (data: JobForm) => {
-    setLoading(true)
-    console.log("Job Data:", data)
-    setTimeout(() => setLoading(false), 1000)
+    jobMutation.mutate(data);
   }
 
   return (
@@ -64,8 +66,8 @@ export  function NewJob() {
                     </SelectTrigger>
                     <SelectContent>
                         {jobType.map((type) => (
-                            <SelectItem key={type} value={type}>
-                                {type}
+                            <SelectItem key={type.value} value={type.value}>
+                                {type.label}
                             </SelectItem>
                         ))}
                     </SelectContent>
