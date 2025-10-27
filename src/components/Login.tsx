@@ -6,7 +6,7 @@ import { Label } from "./ui/label";
 import { useForm, Controller, type SubmitHandler } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { FormValidationError } from "./customComponents/common/formValidationError";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { login } from "@/service/apis";
 import { toast } from "sonner";
 import type { CustomError } from "@/types/error";
@@ -15,6 +15,7 @@ import  { ButtonLoading } from "./customComponents/common/ButtonLoader";
 
 export function Login() {
   
+  const queryClient = useQueryClient()
   const { control, handleSubmit, formState: { errors }, } = useForm({
     defaultValues: {
         email: "",
@@ -27,7 +28,7 @@ export function Login() {
   const loginResponse = useMutation<LoginResponse, CustomError, ILogin>({
     mutationFn: (payload) => login(payload),
     onSuccess: (data) => {
-      console.log("Login Success:", data);
+      queryClient.invalidateQueries({queryKey: ["profile"], exact: true})
       toast.success(data?.message);
       localStorage.setItem("accessToken", data?.data?.token);
       navigate("/");

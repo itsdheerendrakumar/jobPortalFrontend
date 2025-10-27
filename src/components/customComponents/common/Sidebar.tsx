@@ -2,21 +2,12 @@ import { Button } from "@/components/ui/button";
 import { Divider } from "./Divider";
 import { adminEndPoints } from "@/constants/superAdmin";
 import { Link, NavLink } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
-import { getProfile } from "@/service/apis";
-import type { CustomError } from "@/types/error";
 import { useProfileStore } from "@/store/profile";
-import { useEffect } from "react";
 
 export function Sidebar() {
 
-    const {name, profileImage, role, updateProfile, logout} = useProfileStore();
-    console.log(name, profileImage, role)
-    const profile = useMutation<ProfileResponse, CustomError>({
-        mutationFn: getProfile,
-        onSuccess: (data) => {updateProfile(data.data.name, data.data.imageUrl || "", data.data.role)},
-    })
-    useEffect(() => {profile.mutate()}, [])
+    const {name, logout} = useProfileStore();
+  
     return (
         <div className="flex flex-col gap-2.5  justify-between h-full boreder-solid border-sidebar-ring">
             <div className="flex flex-col gap-2.5">

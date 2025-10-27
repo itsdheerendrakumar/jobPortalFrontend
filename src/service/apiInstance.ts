@@ -25,7 +25,8 @@ api.interceptors.response.use(function (response) {
   }, function (error) {
     if(error.status === 401) {
         localStorage.removeItem("accessToken");
-        window.location.href = "/login";
+        if(location.pathname !== "/login")
+          window.location.href = "/login";
     }
     return Promise.reject(error);
   });

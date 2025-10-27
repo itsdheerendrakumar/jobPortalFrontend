@@ -6,11 +6,25 @@ import { superAdminRoutes } from "./routes/superAdmin";
 import { adminRoutes } from "./routes/admin";
 import { Toaster } from "sonner";
 import { useProfileStore } from "./store/profile";
+import type { CustomError } from "./types/error";
+import { useQuery } from "@tanstack/react-query";
+import { getProfile } from "./service/apis";
+import { useEffect } from "react";
 
 export default function App() {
 
-  const {role} = useProfileStore();
-    
+  const {role, updateProfile} = useProfileStore();
+
+  const {data} = useQuery<ProfileResponse, CustomError>({
+    queryKey: ["profile"],
+    queryFn: () => getProfile(),
+  })
+
+  useEffect(() => {
+    if(data)
+      updateProfile(data.data.name, data.data.imageUrl || "", data.data.role)
+  }, [data])
+
   return (
     <>
       <Toaster 
