@@ -57,6 +57,18 @@ interface UpdateAdminStatusPayload {
     status: "active" | "inactive"
     adminId: string
 }
+interface JobListingData {
+    companyName: string
+    createdAt: string 
+    experience: number 
+    jobTitle: string
+    jobType: string
+    location: string
+    minSalary: number
+    maxSalary: number
+    createdBy: string
+    _id: string
+}
 
 type LoginResponse = ApiResponse<LoginData>
 type ProfileResponse = ApiResponse<ProfileData>
@@ -64,3 +76,4 @@ type NewAdminResponse = ApiResponse<{}>
 type MetricsResponse = ApiResponse<MetricsData>
 type AdminReviewerListingResponse = ApiResponse<IAdminUserDetails[]>
 type EmptyDataResponse = ApiResponse<{}>
+type JobListingResponse = ApiResponse<JobListingData[]>

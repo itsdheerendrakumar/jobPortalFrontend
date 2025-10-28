@@ -11,15 +11,18 @@ import { jobSchema } from "@/formValidation/validation"
 import {jobCategory, jobType} from "@/constants"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import type { JobForm } from "@/types/inferType"
-import { useMutation } from "@tanstack/react-query"
+import { QueryClient, useMutation } from "@tanstack/react-query"
 import { createJob } from "@/service/apis"
 import type { CustomError } from "@/types/error"
 
 
 export  function NewJob() {
+
+  const queryClient = new QueryClient();
   const [loading, setLoading] = useState(false)
   const jobMutation = useMutation<any, CustomError, JobForm>({
-    mutationFn: (payload) => createJob(payload)
+    mutationFn: (payload) => createJob(payload),
+    onSuccess: () => queryClient.invalidateQueries({queryKey: ["jobListing"], exact: true})
   })
   const {
     register,
@@ -101,21 +104,21 @@ export  function NewJob() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="flex flex-col gap-2">
-              <Label htmlFor="vacancies">Vacancies</Label>
-              <Input type="number" id="vacancies" {...register("vacancies")} placeholder="5" />
-              {errors?.vacancies && <FormValidationError message={errors.vacancies?.message}/>}
+              <Label htmlFor="vacancy">Vacancies</Label>
+              <Input type="number" id="vacancy" {...register("vacancy")} placeholder="5" />
+              {errors?.vacancy && <FormValidationError message={errors.vacancy?.message}/>}
             </div>
 
             <div className="flex flex-col gap-2">
-              <Label htmlFor="salaryMin">Min Salary</Label>
-              <Input type="number" id="salaryMin" {...register("salaryMin")} placeholder="30000" />
-              {errors?.salaryMin && <FormValidationError message={errors.salaryMin?.message}/>}
+              <Label htmlFor="minSalary">Min Salary</Label>
+              <Input type="number" id="minSalary" {...register("minSalary")} placeholder="30000" />
+              {errors?.minSalary && <FormValidationError message={errors.minSalary?.message}/>}
             </div>
 
             <div className="flex flex-col gap-2">
-              <Label htmlFor="salaryMax">Max Salary</Label>
-              <Input type="number" id="salaryMax" {...register("salaryMax")} placeholder="60000" />
-              {errors?.salaryMax && <FormValidationError message={errors.salaryMax?.message}/>}
+              <Label htmlFor="maxSalary">Max Salary</Label>
+              <Input type="number" id="maxSalary" {...register("maxSalary")} placeholder="60000" />
+              {errors?.maxSalary && <FormValidationError message={errors.maxSalary?.message}/>}
             </div>
           </div>
 
@@ -159,9 +162,9 @@ export  function NewJob() {
           </div>
 
           <div className="flex flex-col gap-2">
-            <Label htmlFor="applicationDeadline">Application Deadline</Label>
-            <Input type="date" id="applicationDeadline" {...register("applicationDeadline")} />
-            {errors?.applicationDeadline && <FormValidationError message={errors.applicationDeadline?.message}/>}
+            <Label htmlFor="deadline">Application Deadline</Label>
+            <Input type="date" id="deadline" {...register("deadline")} />
+            {errors?.deadline && <FormValidationError message={errors.deadline?.message}/>}
           </div>
 
           <Button type="submit" disabled={loading} className="w-full">
