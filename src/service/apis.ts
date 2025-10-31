@@ -45,3 +45,8 @@ export const getJob = async () => {
     const res = await api.get("/job");
     return res.data;
 }
+
+export const getJobDetail = async (jobId: string) => {
+    const res = await api.get(`/job/${jobId}`);
+    return res.data;
+}

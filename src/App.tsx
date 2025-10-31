@@ -18,6 +18,7 @@ export default function App() {
   const {data} = useQuery<ProfileResponse, CustomError>({
     queryKey: ["profile"],
     queryFn: () => getProfile(),
+    refetchOnWindowFocus: false
   })
 
   useEffect(() => {

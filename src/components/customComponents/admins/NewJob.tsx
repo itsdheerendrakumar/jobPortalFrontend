@@ -19,7 +19,6 @@ import type { CustomError } from "@/types/error"
 export  function NewJob() {
 
   const queryClient = new QueryClient();
-  const [loading, setLoading] = useState(false)
   const jobMutation = useMutation<any, CustomError, JobForm>({
     mutationFn: (payload) => createJob(payload),
     onSuccess: () => queryClient.invalidateQueries({queryKey: ["jobListing"], exact: true})
@@ -167,8 +166,8 @@ export  function NewJob() {
             {errors?.deadline && <FormValidationError message={errors.deadline?.message}/>}
           </div>
 
-          <Button type="submit" disabled={loading} className="w-full">
-            {loading ? "Posting..." : "Create Job"}
+          <Button type="submit" disabled={jobMutation?.isPending} className="w-full">
+            {jobMutation?.isPending ? "Posting..." : "Create Job"}
           </Button>
         </form>
       </CardContent>

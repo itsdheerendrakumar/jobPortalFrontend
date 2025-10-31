@@ -66,7 +66,8 @@ interface JobListingData {
     location: string
     minSalary: number
     maxSalary: number
-    createdBy: string
+    createdBy: string,
+    vacancy: number
     _id: string
 }
 

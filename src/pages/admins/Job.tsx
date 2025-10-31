@@ -30,7 +30,8 @@ export function Job() {
       <Divider />
       <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         {data?.data?.map(job => (
-          <JobCard 
+          <JobCard
+            key={job?._id}
             job={job}
           />
         ))}
