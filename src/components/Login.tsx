@@ -11,7 +11,7 @@ import { login } from "@/service/apis";
 import { toast } from "sonner";
 import type { CustomError } from "@/types/error";
 import { useNavigate } from "react-router-dom";
-import  { ButtonLoading } from "./customComponents/common/ButtonLoader";
+import  { ButtonLoading } from "./customComponents/common/Loader";
 
 export function Login() {
   

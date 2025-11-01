@@ -12,7 +12,7 @@ export function JobCard({job}: JobCardProps) {
                 <CardTitle>{job?.jobTitle}</CardTitle>
                 <CardDescription className="flex justify-between">
                     <span>{job?.location}</span>
-                    <span className="font-semibold bg-green-200 text-green-700 font-semibold px-3 py-1 rounded-md">
+                    <span className="bg-green-200 text-green-700 font-semibold px-3 py-1 rounded-md">
                         {job?.vacancy > 1 ? "Position" : "Position"} {job?.vacancy}
                     </span>
                 </CardDescription>

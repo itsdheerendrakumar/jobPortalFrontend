@@ -68,7 +68,14 @@ interface JobListingData {
     maxSalary: number
     createdBy: string,
     vacancy: number
+    deadline
     _id: string
+}
+interface JobDetailData extends JobListingData {
+  category: string;
+  description: string;
+  education: string;
+  skills: string;
 }
 
 type LoginResponse = ApiResponse<LoginData>
@@ -78,3 +85,4 @@ type MetricsResponse = ApiResponse<MetricsData>
 type AdminReviewerListingResponse = ApiResponse<IAdminUserDetails[]>
 type EmptyDataResponse = ApiResponse<{}>
 type JobListingResponse = ApiResponse<JobListingData[]>
+type JobDetailResponse = ApiResponse<JobDetailData>

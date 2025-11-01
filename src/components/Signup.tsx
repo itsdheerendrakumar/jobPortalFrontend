@@ -15,7 +15,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { CustomError } from "@/types/error";
 import { createNewAdmin } from "@/service/apis";
 import { toast } from "sonner";
-import { ButtonLoading } from "./customComponents/common/ButtonLoader";
+import { ButtonLoading } from "./customComponents/common/Loader";
 interface SignupProps {
     isCreateAdmin?: boolean
 }
