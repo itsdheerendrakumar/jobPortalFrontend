@@ -27,6 +27,9 @@ export const reviewerHeadersSuperAdmin = [
 ]
 
 export const adminEndPoints = [
-    {endPoint: "/", label: "Dashboard"},
     {endPoint: "/jobs", label: "Jobs"},
+]
+
+export const commonEndPoints = [
+    {endPoint: "/", label: "Dashboard"},
 ]
