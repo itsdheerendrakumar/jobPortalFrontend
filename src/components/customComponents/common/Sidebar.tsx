@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Divider } from "./Divider";
-import { adminEndPoints } from "@/constants/superAdmin";
 import { Link, NavLink } from "react-router-dom";
 import { useProfileStore } from "@/store/profile";
+import { adminEndPoints } from "@/constants/user";
 
 export function Sidebar() {
 
