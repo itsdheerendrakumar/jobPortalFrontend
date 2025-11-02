@@ -8,11 +8,11 @@ export const loginSchema = yup
 
 export const signupSchema = yup
   .object({
-    email: yup.string().email().required(),
-    password: yup.string().trim().min(6).max(15).trim().required(),
-    name: yup.string().trim().min(2).max(20).matches(/^[A-Za-z ]+$/).required(),
-    phone: yup.string().trim().min(4).max(13).matches(/^[0-9]+$/).required(),
-    country: yup.string().trim().max(40).required(),
+    email: yup.string().trim().email().required(),
+    password: yup.string().trim().trim().min(6).max(15).trim().required(),
+    name: yup.string().trim().trim().min(2).max(20).matches(/^[A-Za-z ]+$/, "Name will contain alphabets only").required(),
+    phone: yup.string().trim().trim().min(4).max(13).matches(/^[0-9]+$/, "Phone will accept digit only.").required(),
+    country: yup.string().trim().trim().max(40).required(),
   })
   
 
