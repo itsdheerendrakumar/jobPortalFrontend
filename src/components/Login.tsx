@@ -5,16 +5,19 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { useForm, Controller, type SubmitHandler } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
-import { FormValidationError } from "./customComponents/common/formValidationError";
+import { FormValidationError } from "./customComponents/common/FormValidationError";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { login } from "@/service/apis";
 import { toast } from "sonner";
 import type { CustomError } from "@/types/error";
 import { useNavigate } from "react-router-dom";
 import  { ButtonLoading } from "./customComponents/common/Loader";
+import { Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
 
 export function Login() {
   
+  const [isTypePassword, setIsTypePassword] = useState(true);
   const queryClient = useQueryClient()
   const { control, handleSubmit, formState: { errors }, } = useForm({
     defaultValues: {
@@ -73,7 +76,19 @@ export function Login() {
                 <Controller
                     name="password"
                     control={control}
-                    render={({ field }) => <Input {...field} type="password" />}
+                    render={({ field }) => (
+                      <div className="relative">
+                        <Input {...field} type={isTypePassword ? "password" : "text"} className="pr-10" />
+                        <Button 
+                          variant="secondary" 
+                          className="absolute right-0 top-2.5 px-0 p-0 h-auto cursor-pointer z-1"
+                          onClick={() => setIsTypePassword(pre => !pre)}
+                        >
+                          {isTypePassword && <Eye size={16} />}
+                          {!isTypePassword && <EyeOff size={16} />}
+                        </Button>
+                      </div>
+                    )}
                 />
                 {errors?.password && <FormValidationError message={errors?.password?.message} />}
                 </div>
