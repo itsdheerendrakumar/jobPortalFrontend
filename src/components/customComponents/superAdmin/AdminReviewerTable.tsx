@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button"
-import { Skeleton } from "@/components/ui/skeleton"
 import {
     Table,
     TableBody,
@@ -14,10 +13,10 @@ import type { CustomError } from "@/types/error"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { ShieldCheck, ShieldOff, Trash } from "lucide-react"
 import { toast } from "sonner"
+import { RowLoading } from "../common/Loader"
 
 interface AdminTableProps {
     headers: string[]
-    data: IAdminUserDetails[]
 }
 
 export function AdminReviewerTable({headers}: AdminTableProps) {
@@ -49,28 +48,7 @@ export function AdminReviewerTable({headers}: AdminTableProps) {
     return (
         <>
             {isLoading && 
-            <div 
-                className="
-                flex 
-                flex-col 
-                gap-1 
-                [&>*]:min-h-8 
-                [&>*]:max-h-full 
-                [&>*]:max-w-full 
-                [&>*]:rounded-xl 
-                [&>*]:bg-muted-foreground"
-            >
-                <Skeleton  />
-                <Skeleton  />
-                <Skeleton  />
-                <Skeleton  />
-                <Skeleton  />
-                <Skeleton  />
-                <Skeleton  />
-                <Skeleton  />
-                <Skeleton  />
-                <Skeleton  />
-            </div>
+            <RowLoading />
             }
 
             {isSuccess && data?.data?.length > 0 &&

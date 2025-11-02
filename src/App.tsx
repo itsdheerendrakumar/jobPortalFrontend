@@ -10,6 +10,7 @@ import type { CustomError } from "./types/error";
 import { useQuery } from "@tanstack/react-query";
 import { getProfile } from "./service/apis";
 import { useEffect } from "react";
+import { reviewerRoutes } from "./routes/reviewer";
 
 export default function App() {
 
@@ -42,6 +43,11 @@ export default function App() {
           {role === "admin" && adminRoutes.map(({path, Page}) => (
             <Route key={path} path={path} element={<Page />} />
           ))}
+
+          {role === "reviewer" && reviewerRoutes.map(({path, Page}) => (
+            <Route key={path} path={path} element={<Page />} />
+          ))}
+
         </Route>
       </Routes>
     </>
