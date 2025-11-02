@@ -13,7 +13,7 @@ import { Checkbox } from "./ui/checkbox";
 import { useProfileStore } from "@/store/profile";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { CustomError } from "@/types/error";
-import { createNewAdmin } from "@/service/apis";
+import { createNewUser } from "@/service/apis";
 import { toast } from "sonner";
 import { ButtonLoading } from "./customComponents/common/Loader";
 interface SignupProps {
@@ -35,22 +35,25 @@ export function Signup({ isCreateAdmin }: SignupProps) {
         resolver: yupResolver(signupSchema),
 
     });
-
+    console.log(errors)
     const onSubmit: SubmitHandler<ISignup> = async (data) => {
         const payload = role === "superAdmin" ? { ...data, deletePermission } : data;
-        if(role === "superAdmin") {
-            newAdminResponse.mutate(payload);
-        }
+        console.log(payload)
+        newUserMutation.mutate(payload);
     }
-    const newAdminResponse = useMutation<NewAdminResponse, CustomError, ISignup>({
-        mutationFn: (payload) => createNewAdmin(payload),
+
+    const newUserMutation = useMutation<NewAdminResponse, CustomError, ISignup>({
+        mutationFn: (payload) => createNewUser(endpoint, payload),
         onSuccess:(data) => {
             toast.success(data?.message)
             reset();
             queryClient.invalidateQueries({queryKey: ["admin-listing", "super-admin-metrics"]})
-        }
+        },
+        onError: (err) => toast.error(err?.response?.data?.message)
     })
-    const loading = newAdminResponse.isPending;
+    const loading = newUserMutation.isPending;
+    const endpoint = role === "superAdmin" ? "/user/admin" : (role === "admin" ? "/user/reviewer" : "/user/user")
+
     return (
         <div className="flex items-center justify-center h-[calc(100vh - 32px)]">
             <Card className="w-full max-w-sm">
