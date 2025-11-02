@@ -20,15 +20,17 @@ export function Job() {
     queryFn: () => getJob()
   })
   return (
-    <>
-      <div className="flex items-center justify-between">
+    <div>
+      <div className="flex items-center justify-between p-4">
         <span>Jobs</span>
         <Button className="flex items-center justify-center cursor-pointer" onClick={handleIsOpen}>
           <Plus size={16} />Create new job
         </Button>
       </div>
+
       <Divider />
-      <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+
+      <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 p-4">
         {data?.data?.map(job => (
           <JobCard
             key={job?._id}
@@ -49,6 +51,6 @@ export function Job() {
         </DialogContent>
 
       </Dialog>
-    </>
+    </div>
   )
 }

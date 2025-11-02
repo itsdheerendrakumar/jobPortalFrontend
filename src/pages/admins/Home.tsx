@@ -31,7 +31,7 @@ export default function Home() {
       </div>
       <Divider />
 
-      <div className="grid grid-cols-4 gap-4 p-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
         <MetricCard
           label="Total Admins"
           value={data?.data?.admin ?? 0}
@@ -59,7 +59,7 @@ export default function Home() {
       </div>
 
       <Tabs defaultValue="newApplication" className="mt-4 p-4">
-        <TabsList className="bg-chart-2 [&>*]:cursor-pointer">
+        <TabsList className="bg-chart-2 [&>*]:cursor-pointer flex gap-3 flex-wrap h-fit">
           <TabsTrigger value="newApplication">New Applications</TabsTrigger>
           <TabsTrigger value="reviewedApplications">Reviewed Applications</TabsTrigger>
           <TabsTrigger value="selectedApplications">Selected Applications</TabsTrigger>
