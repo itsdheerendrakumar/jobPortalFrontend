@@ -1,0 +1,120 @@
+import { Button } from "@/components/ui/button"
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table"
+import { deleteAdmin, getAdminListing, updateAdminStatus } from "@/service/apis"
+import { useProfileStore } from "@/store/profile"
+import type { CustomError } from "@/types/error"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { MoveUp, ShieldCheck, ShieldOff, Trash } from "lucide-react"
+import { toast } from "sonner"
+import { RowLoading } from "./Loader"
+import { useReviewerListing } from "@/hooks/useReviewerListing"
+import { ShowError } from "./ShowError"
+import { NoDataFound } from "./NoDataFound"
+import { format } from "date-fns"
+
+interface AdminTableProps {
+    headers: string[]
+}
+
+export function ReviewerSuperAdminListing({ headers }: AdminTableProps) {
+
+    const { role } = useProfileStore();
+    const queryClient = useQueryClient();
+    const { data, isSuccess, isLoading, isError, error } = useReviewerListing();
+
+    // const updateAdminStatusMutation = useMutation<EmptyDataResponse, CustomError, UpdateAdminStatusPayload>({
+    //     mutationFn: (payload) => updateAdminStatus(payload),
+    //     onSuccess: (data) => {
+    //         queryClient.invalidateQueries({ queryKey: ["admin-listing"], exact: true });
+    //         toast.success(data?.message)
+    //     }
+    // });
+
+    // const deleteAdminMutation = useMutation<EmptyDataResponse, CustomError, string>({
+    //     mutationFn: (adminId) => deleteAdmin(adminId),
+    //     onSuccess: (data) => {
+    //         queryClient.invalidateQueries({ queryKey: ["admin-listing"], exact: true });
+    //         toast.success(data?.message)
+    //     }
+    // })
+
+    if (isLoading) return <RowLoading />
+    if (isError) return <ShowError message={error?.response?.data?.message} />
+    if (isSuccess && data?.data?.length === 0) return <NoDataFound />
+
+    return (
+        <Table className="bg-white">
+            <TableHeader>
+                <TableRow>
+                    {headers.map((header) => (
+                        <TableHead key={header}>{header}</TableHead>
+                    ))}
+
+                </TableRow>
+            </TableHeader>
+            <TableBody>
+                {data?.data?.map((admin) => (
+                    <TableRow key={admin?.email}>
+                        <TableCell>{admin?.name}</TableCell>
+                        <TableCell>{admin?.email}</TableCell>
+                        <TableCell>{admin?.phone}</TableCell>
+                        <TableCell>{admin?.country}</TableCell>
+                        <TableCell>{format(admin?.createdAt, "dd-MM-yyyy")}</TableCell>
+                        <TableCell>{admin?.status === "active" ?
+                            <span className="text-success">Active</span> :
+                            <span className="text-destructive">Inactive</span>}
+                        </TableCell>
+                        <TableCell
+                            className={`flex gap-4 items-center [&>.trash]:text-destructive cursor-pointer
+                                    [&>.active]:text-chart-2 [&>.inactive]:text-destructive`}
+                        >
+                            {role === "admin" &&
+                                <>
+                                    <Button
+                                        // disabled={updateAdminStatusMutation.isPending || deleteAdminMutation.isPending}
+                                        variant="secondary"
+                                        className="cursor-pointer"
+                                        // onClick={() => updateAdminStatusMutation.mutate({
+                                        //     adminId: admin?._id,
+                                        //     status: admin?.status === "active" ? "inactive" : "active"
+                                        // })}
+                                    >
+                                        {admin?.status === "active" ?
+                                            <ShieldOff size={16} className="text-destructive" /> :
+                                            <ShieldCheck size={16} className="text-success" />
+                                        }
+                                    </Button>
+
+                                    <Button
+                                        variant="secondary"
+                                        // disabled={updateAdminStatusMutation.isPending || deleteAdminMutation.isPending}
+                                        // onClick={() => deleteAdminMutation.mutate(admin?._id)}
+                                        className="cursor-pointer [&>*]:color-red-500"
+                                    >
+                                        <Trash size={16} className="text-destructive" />
+                                    </Button>
+                                </>
+                            }
+                            {role === "superAdmin" && 
+                                <Button
+                                    // disabled={updateAdminStatusMutation.isPending || deleteAdminMutation.isPending}
+                                    variant="secondary"
+                                    className="cursor-pointer"
+                                >
+                                    <MoveUp className="text-success"/>
+                                </Button>
+                            }
+                        </TableCell>
+                    </TableRow>
+                ))}
+            </TableBody>
+        </Table>
+    )
+}

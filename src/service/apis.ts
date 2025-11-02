@@ -11,8 +11,8 @@ export const getProfile = async () => {
     return res.data;
 }
 
-export const createNewAdmin = async (payload: ISignup) => {
-    const res = await api.post("/user/admin", payload);
+export const createNewUser = async (endPoint: string, payload: ISignup) => {
+    const res = await api.post(endPoint, payload);
     return res.data;
 }
 
@@ -49,4 +49,9 @@ export const getJob = async () => {
 export const getJobDetail = async (jobId: string) => {
     const res = await api.get(`/job/${jobId}`);
     return res.data;
+}
+
+export const getReviewerListing = async () => {
+    const res = await api.get("user/reviewer-listing");
+    return res?.data
 }
