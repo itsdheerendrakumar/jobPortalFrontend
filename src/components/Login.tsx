@@ -10,19 +10,19 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { login } from "@/service/apis";
 import { toast } from "sonner";
 import type { CustomError } from "@/types/error";
-import { useNavigate } from "react-router-dom";
-import  { ButtonLoading } from "./customComponents/common/Loader";
+import { Link, useNavigate } from "react-router-dom";
+import { ButtonLoading } from "./customComponents/common/Loader";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 
 export function Login() {
-  
+
   const [isTypePassword, setIsTypePassword] = useState(true);
   const queryClient = useQueryClient()
   const { control, handleSubmit, formState: { errors }, } = useForm({
     defaultValues: {
-        email: "",
-        password: "",
+      email: "",
+      password: "",
     },
     resolver: yupResolver(loginSchema),
 
@@ -31,7 +31,7 @@ export function Login() {
   const loginResponse = useMutation<LoginResponse, CustomError, ILogin>({
     mutationFn: (payload) => login(payload),
     onSuccess: (data) => {
-      queryClient.invalidateQueries({queryKey: ["profile"], exact: true})
+      queryClient.invalidateQueries({ queryKey: ["profile"], exact: true })
       toast.success(data?.message);
       localStorage.setItem("accessToken", data?.data?.token);
       navigate("/");
@@ -47,58 +47,60 @@ export function Login() {
 
   return (
     <div className="flex items-center justify-center h-screen">
-        <Card className="w-full max-w-sm">
+      <Card className="w-full max-w-sm">
         <CardHeader>
-            <CardTitle className="text-2xl text-center"><span>job</span>Portal<span></span></CardTitle>
+          <CardTitle className="text-2xl text-center"><span>job</span>Portal<span></span></CardTitle>
         </CardHeader>
         <CardContent>
-            <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-6">
-                <div className="grid gap-2">
+              <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
                 <Controller
-                    name="email"
-                    control={control}
-                    render={({ field }) => <Input {...field} />}
+                  name="email"
+                  control={control}
+                  render={({ field }) => <Input {...field} />}
                 />
                 {errors?.email && <FormValidationError message={errors?.email?.message} />}
-                </div>
-                <div className="grid gap-2">
+              </div>
+              <div className="grid gap-2">
                 <div className="flex items-center">
-                    <Label htmlFor="password">Password</Label>
-                    <a
-                    href="#"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                    >
-                    Forgot your password?
-                    </a>
+                  <Label htmlFor="password">Password</Label>
                 </div>
                 <Controller
-                    name="password"
-                    control={control}
-                    render={({ field }) => (
-                      <div className="relative">
-                        <Input {...field} type={isTypePassword ? "password" : "text"} className="pr-10" />
-                        <Button 
-                          variant="secondary" 
-                          className="absolute right-0 top-2.5 px-0 p-0 h-auto cursor-pointer z-1"
-                          onClick={() => setIsTypePassword(pre => !pre)}
-                        >
-                          {isTypePassword && <Eye size={16} />}
-                          {!isTypePassword && <EyeOff size={16} />}
-                        </Button>
-                      </div>
-                    )}
+                  name="password"
+                  control={control}
+                  render={({ field }) => (
+                    <div className="relative">
+                      <Input {...field} type={isTypePassword ? "password" : "text"} className="pr-10" />
+                      <Button
+                        variant="secondary"
+                        className="absolute right-0 top-2.5 px-0 p-0 h-auto cursor-pointer z-1"
+                        onClick={() => setIsTypePassword(pre => !pre)}
+                      >
+                        {isTypePassword && <Eye size={16} />}
+                        {!isTypePassword && <EyeOff size={16} />}
+                      </Button>
+                    </div>
+                  )}
                 />
                 {errors?.password && <FormValidationError message={errors?.password?.message} />}
-                </div>
-                <Button type="submit" className="w-full cursor-pointer" disabled={loginResponse.isPending}>
-                  {loginResponse.isPending ? <ButtonLoading /> : "Login"}
-                </Button>
+              </div>
+              <Button type="submit" className="w-full cursor-pointer" disabled={loginResponse.isPending}>
+                {loginResponse.isPending ? <ButtonLoading /> : "Login"}
+              </Button>
             </div>
-            </form>
+          </form>
+          <div className="flex justify-end mt-3">
+            <Link
+              to="/signup"
+              className="text-sm underline-offset-4 hover:underline"
+            >
+              Don't have account.
+            </Link>
+          </div>
         </CardContent>
-        </Card>
+      </Card>
     </div>
   )
 }

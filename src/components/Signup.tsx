@@ -5,7 +5,7 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { useForm, Controller, type SubmitHandler } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
-import { FormValidationError } from "./customComponents/common/formValidationError";
+import { FormValidationError } from "./customComponents/common/FormValidationError";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { countryData } from "@/constants/country";
 import { useState } from "react";
@@ -16,6 +16,7 @@ import type { CustomError } from "@/types/error";
 import { createNewUser } from "@/service/apis";
 import { toast } from "sonner";
 import { ButtonLoading } from "./customComponents/common/Loader";
+import { Link } from "react-router-dom";
 interface SignupProps {
     isCreateAdmin?: boolean
 }
@@ -55,7 +56,7 @@ export function Signup({ isCreateAdmin }: SignupProps) {
     const endpoint = role === "superAdmin" ? "/user/admin" : (role === "admin" ? "/user/reviewer" : "/user/user")
 
     return (
-        <div className="flex items-center justify-center h-[calc(100vh - 32px)]">
+        <div className="flex items-center justify-center min-h-screen p-4">
             <Card className="w-full max-w-sm">
                 {!isCreateAdmin &&
                     <CardHeader>
@@ -138,6 +139,14 @@ export function Signup({ isCreateAdmin }: SignupProps) {
                             </Button>
                         </div>
                     </form>
+                    <div className="flex justify-end mt-3">
+                        <Link
+                            to="/login"
+                            className="text-sm underline-offset-4 hover:underline"
+                        >
+                        Have account.
+                        </Link>
+                    </div>
                 </CardContent>
             </Card>
         </div>
