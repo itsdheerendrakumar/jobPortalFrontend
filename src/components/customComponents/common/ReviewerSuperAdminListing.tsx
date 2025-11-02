@@ -7,7 +7,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { deleteAdmin, getAdminListing, updateAdminStatus } from "@/service/apis"
+import { deleteAdmin, getAdminListing, promoteReviewer, updateAdminStatus } from "@/service/apis"
 import { useProfileStore } from "@/store/profile"
 import type { CustomError } from "@/types/error"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
@@ -28,6 +28,16 @@ export function ReviewerSuperAdminListing({ headers }: AdminTableProps) {
     const { role } = useProfileStore();
     const queryClient = useQueryClient();
     const { data, isSuccess, isLoading, isError, error } = useReviewerListing();
+    const promoteReviewerMutation = useMutation<EmptyDataResponse, CustomError, string>({
+        mutationFn: (userId) => promoteReviewer(userId),
+        onSuccess: (data) => {
+            toast.success(data?.message);
+            queryClient.invalidateQueries({
+                queryKey: ["admin-listing", "reviewer-listing", "super-admin-metrics"]
+            })
+        },
+        onError: (err) => toast.error(err?.response?.data?.message)
+    })
 
     // const updateAdminStatusMutation = useMutation<EmptyDataResponse, CustomError, UpdateAdminStatusPayload>({
     //     mutationFn: (payload) => updateAdminStatus(payload),
@@ -60,14 +70,14 @@ export function ReviewerSuperAdminListing({ headers }: AdminTableProps) {
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {data?.data?.map((admin) => (
-                    <TableRow key={admin?.email}>
-                        <TableCell>{admin?.name}</TableCell>
-                        <TableCell>{admin?.email}</TableCell>
-                        <TableCell>{admin?.phone}</TableCell>
-                        <TableCell>{admin?.country}</TableCell>
-                        <TableCell>{format(admin?.createdAt, "dd-MM-yyyy")}</TableCell>
-                        <TableCell>{admin?.status === "active" ?
+                {data?.data?.map((user) => (
+                    <TableRow key={user?.email}>
+                        <TableCell>{user?.name}</TableCell>
+                        <TableCell>{user?.email}</TableCell>
+                        <TableCell>{user?.phone}</TableCell>
+                        <TableCell>{user?.country}</TableCell>
+                        <TableCell>{format(user?.createdAt, "dd-MM-yyyy")}</TableCell>
+                        <TableCell>{user?.status === "active" ?
                             <span className="text-success">Active</span> :
                             <span className="text-destructive">Inactive</span>}
                         </TableCell>
@@ -86,7 +96,7 @@ export function ReviewerSuperAdminListing({ headers }: AdminTableProps) {
                                         //     status: admin?.status === "active" ? "inactive" : "active"
                                         // })}
                                     >
-                                        {admin?.status === "active" ?
+                                        {user?.status === "active" ?
                                             <ShieldOff size={16} className="text-destructive" /> :
                                             <ShieldCheck size={16} className="text-success" />
                                         }
@@ -104,9 +114,10 @@ export function ReviewerSuperAdminListing({ headers }: AdminTableProps) {
                             }
                             {role === "superAdmin" && 
                                 <Button
-                                    // disabled={updateAdminStatusMutation.isPending || deleteAdminMutation.isPending}
+                                    disabled={promoteReviewerMutation.isPending}
                                     variant="secondary"
                                     className="cursor-pointer"
+                                    onClick={() => promoteReviewerMutation.mutate(user?._id)}
                                 >
                                     <MoveUp className="text-success"/>
                                 </Button>

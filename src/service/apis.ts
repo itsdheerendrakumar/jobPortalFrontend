@@ -55,3 +55,8 @@ export const getReviewerListing = async () => {
     const res = await api.get("user/reviewer-listing");
     return res?.data
 }
+
+export const promoteReviewer = async (userId: string) => {
+    const res = await api.patch("/user/promote-reviewer", {userId})
+    return res.data;
+}
