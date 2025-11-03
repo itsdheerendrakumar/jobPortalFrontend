@@ -17,11 +17,13 @@ import { createNewUser } from "@/service/apis";
 import { toast } from "sonner";
 import { ButtonLoading } from "./customComponents/common/Loader";
 import { Link } from "react-router-dom";
+import { Eye, EyeOff } from "lucide-react";
 interface SignupProps {
     isCreateAdmin?: boolean
 }
 export function Signup({ isCreateAdmin }: SignupProps) {
 
+    const [isTypePassword, setIsTypePassword] = useState(true);
     const {role} = useProfileStore();
     const queryClient = useQueryClient();
     const [deletePermission, setDeletePermission] = useState(true);
@@ -99,7 +101,19 @@ export function Signup({ isCreateAdmin }: SignupProps) {
                                 <Controller
                                     name="password"
                                     control={control}
-                                    render={({ field }) => <Input {...field} type="password" />}
+                                    render={({ field }) => (
+                                        <div className="relative">
+                                         <Input {...field} type={isTypePassword ? "password" : "text"} />
+                                         <Button
+                                            variant="secondary"
+                                            className="absolute right-0 top-2.5 px-0 p-0 h-auto cursor-pointer z-1"
+                                            onClick={() => setIsTypePassword(pre => !pre)}
+                                        >
+                                            {isTypePassword && <Eye size={16} />}
+                                            {!isTypePassword && <EyeOff size={16} />}
+                                        </Button>
+                                        </div>
+                                    )}
                                 />
                                 {errors?.password && <FormValidationError message={errors?.password?.message} />}
                             </div>
