@@ -4,6 +4,7 @@ import { JobCard } from "@/components/customComponents/common/JobCard";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { getJob } from "@/service/apis";
+import { useProfileStore } from "@/store/profile";
 import type { CustomError } from "@/types/error";
 import { useQuery } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
@@ -11,6 +12,7 @@ import { useState } from "react";
 
 export function Job() {
 
+  const {role} = useProfileStore();
   const [isOpen, setIsOpen] = useState(false);
   const handleIsOpen = () => {
     setIsOpen(!isOpen);
@@ -23,9 +25,11 @@ export function Job() {
     <div>
       <div className="flex items-center justify-between p-4">
         <span>Jobs</span>
-        <Button className="flex items-center justify-center cursor-pointer" onClick={handleIsOpen}>
-          <Plus size={16} />Create new job
-        </Button>
+        {role === "admin" && 
+          <Button className="flex items-center justify-center cursor-pointer" onClick={handleIsOpen}>
+            <Plus size={16} />Create new job
+          </Button>
+        }
       </div>
 
       <Divider />

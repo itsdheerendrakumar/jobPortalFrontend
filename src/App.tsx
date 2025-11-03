@@ -11,6 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getProfile } from "./service/apis";
 import { useEffect } from "react";
 import { reviewerRoutes } from "./routes/reviewer";
+import { userRoutes } from "./routes/user";
 
 export default function App() {
 
@@ -45,6 +46,10 @@ export default function App() {
           ))}
 
           {role === "reviewer" && reviewerRoutes.map(({path, Page}) => (
+            <Route key={path} path={path} element={<Page />} />
+          ))}
+
+          {role === "user" && userRoutes.map(({path, Page}) => (
             <Route key={path} path={path} element={<Page />} />
           ))}
 

@@ -28,7 +28,7 @@ export function Sidebar() {
                         {path.label}
                     </NavLink>
                 ))}
-                {(role === "admin" || role === "user") && adminEndPoints.map((path) => (
+                {(role === "admin") && adminEndPoints.map((path) => (
                     <NavLink
                         key={path.label}
                         to={path.endPoint}

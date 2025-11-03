@@ -26,7 +26,7 @@ export function JobPage() {
     if(isSuccess && !data?.data?._id) return <NoDataFound />
 
     return (
-        <div>
+        <div className="p-4">
             <div className="mx-auto w-full sm:full md:max-w[700px] lg:max-w-[1000px] bg-white p-4">
                 <div className="flex flex-col gap-3">
                     <h2 className="text-lg font-semibold text-capitalize">{data?.data?.jobTitle}</h2>
