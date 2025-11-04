@@ -13,9 +13,16 @@ import { Signup } from "@/components/Signup";
 import { useState } from "react";
 import { useMetrics } from "@/hooks/useMetrics";
 import { ReviewerSuperAdminListing } from "@/components/customComponents/common/ReviewerSuperAdminListing";
+import { useQuery } from "@tanstack/react-query";
+import { getAppliedJobs } from "@/service/apis";
+
 export default function Home() {
 
   const [isOpen, setIsOpen] = useState(false);
+  const appliedJobQuery = useQuery({
+    queryKey: ["applied-job-listing"],
+    queryFn: () => getAppliedJobs()
+  })
   const { data, isLoading, isError } = useMetrics();
   const handleIsOpen = () => {
     setIsOpen(!isOpen);

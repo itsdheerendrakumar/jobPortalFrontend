@@ -60,3 +60,13 @@ export const promoteReviewer = async (userId: string) => {
     const res = await api.patch("/user/promote-reviewer", {userId})
     return res.data;
 }
+
+export const applyJob = async (jobId: string) => {
+    const res = await api.post("/applied-job", {jobId});
+    return res.data;
+}
+
+export const getAppliedJobs = async () => {
+    const res = await api.get("/applied-job");
+    return res.data;
+}

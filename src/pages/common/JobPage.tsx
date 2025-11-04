@@ -2,9 +2,9 @@ import { Divider } from "@/components/customComponents/common/Divider";
 import { FullPageLoding } from "@/components/customComponents/common/Loader";
 import { NoDataFound } from "@/components/customComponents/common/NoDataFound";
 import { ShowError } from "@/components/customComponents/common/ShowError";
-import { getJobDetail } from "@/service/apis";
+import { applyJob, getJobDetail } from "@/service/apis";
 import type { CustomError } from "@/types/error";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { BadgeIndianRupee, BicepsFlexed, BookOpenText, Clock4, Locate } from "lucide-react";
 import { useParams } from "react-router-dom"
 import {format} from "date-fns"
@@ -19,6 +19,11 @@ export function JobPage() {
         queryFn: () => getJobDetail(jobId),
         enabled: jobId?.length > 0
     })
+
+    const applyJobMutation = useMutation<EmptyDataResponse, CustomError>({
+        mutationFn: () => applyJob(jobId)
+    })
+
     const deadline = new Date(data?.data?.deadline);
     const today = new Date();
     if(isLoading) return <FullPageLoding />
@@ -92,7 +97,14 @@ export function JobPage() {
                     </div>
                 </div>
                 <Divider />
-                {role === "user" && <Button disabled={deadline < today}>Apply</Button>}
+                {role === "user" && 
+                <Button 
+                    className="cursor-pointer" 
+                    disabled={(deadline < today) || applyJobMutation?.isPending} 
+                    onClick={() => applyJobMutation.mutate()}
+                >
+                    Apply
+                </Button>}
                 {role === "admin" &&<Button>Extend Deadline</Button>}
             </div>
         </div>
