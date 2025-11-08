@@ -105,6 +105,7 @@ export function Signup({ isCreateAdmin }: SignupProps) {
                                         <div className="relative">
                                          <Input {...field} type={isTypePassword ? "password" : "text"} />
                                          <Button
+                                            type="button"
                                             variant="secondary"
                                             className="absolute right-0 top-2.5 px-0 p-0 h-auto cursor-pointer z-1"
                                             onClick={() => setIsTypePassword(pre => !pre)}
