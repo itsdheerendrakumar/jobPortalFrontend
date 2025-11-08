@@ -1,12 +1,17 @@
 import { Divider } from "@/components/customComponents/common/Divider";
 import { MetricCard } from "@/components/customComponents/common/MetricCard";
 import { useMetrics } from "@/hooks/useMetrics"
+import { getAssignedJob } from "@/service/apis";
+import { useQuery } from "@tanstack/react-query";
 import { User } from "lucide-react";
 
 export function Home() {
 
     const { data, isLoading } = useMetrics();
-
+    const assignedJobQuery = useQuery({
+        queryKey: ["assignedJob"],
+        queryFn: getAssignedJob
+    })
     return (
         <>
             <div className="p-4">

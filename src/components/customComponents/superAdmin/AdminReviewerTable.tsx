@@ -7,7 +7,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { deleteAdmin, getAdminListing, updateAdminStatus } from "@/service/apis"
+import { getAdminListing, updateAdminStatus } from "@/service/apis"
 import { useProfileStore } from "@/store/profile"
 import type { CustomError } from "@/types/error"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
@@ -37,13 +37,13 @@ export function AdminReviewerTable({headers}: AdminTableProps) {
         }
     });
     
-    const deleteAdminMutation = useMutation<EmptyDataResponse, CustomError, string>({
-        mutationFn: (adminId) =>  deleteAdmin(adminId),
-        onSuccess: (data) => {
-            queryClient.invalidateQueries({queryKey: ["admin-listing"], exact: true});
-            toast.success(data?.message)
-        }
-    })
+    // const deleteAdminMutation = useMutation<EmptyDataResponse, CustomError, string>({
+    //     mutationFn: (adminId) =>  deleteAdmin(adminId),
+    //     onSuccess: (data) => {
+    //         queryClient.invalidateQueries({queryKey: ["admin-listing"], exact: true});
+    //         toast.success(data?.message)
+    //     }
+    // })
 
     return (
         <>
@@ -78,7 +78,7 @@ export function AdminReviewerTable({headers}: AdminTableProps) {
                                         [&>.active]:text-chart-2 [&>.inactive]:text-destructive`}
                                 >
                                     <Button 
-                                        disabled={updateAdminStatusMutation.isPending || deleteAdminMutation.isPending} 
+                                        disabled={updateAdminStatusMutation.isPending} 
                                         variant="secondary" 
                                         className="cursor-pointer"
                                         onClick={() => updateAdminStatusMutation.mutate({
@@ -91,14 +91,14 @@ export function AdminReviewerTable({headers}: AdminTableProps) {
                                         <ShieldCheck size={16} className="text-success"/>
                                         }
                                     </Button>
-                                    <Button 
+                                    {/* <Button 
                                         variant="secondary" 
-                                        disabled={updateAdminStatusMutation.isPending || deleteAdminMutation.isPending} 
+                                        disabled={updateAdminStatusMutation.isPending} 
                                         onClick={() => deleteAdminMutation.mutate(admin?._id)}
                                         className="cursor-pointer [&>*]:color-red-500"
                                     >
                                         <Trash size={16} className="text-destructive"/>
-                                    </Button>
+                                    </Button> */}
                                 </TableCell>
                             </TableRow>
                         ))}

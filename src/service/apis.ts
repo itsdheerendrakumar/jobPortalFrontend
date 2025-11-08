@@ -31,10 +31,10 @@ export const updateAdminStatus = async (payload: UpdateAdminStatusPayload) => {
     return res.data;
 }
 
-export const deleteAdmin = async (adminId: string) => {
-    const res = await api.delete(`/user/admin/${adminId}`);
-    return res.data;
-}
+// export const deleteAdmin = async (adminId: string) => {
+//     const res = await api.delete(`/user/admin/${adminId}`);
+//     return res.data;
+// }
 
 export const createJob = async (payload: JobForm) => {
     const res = await api.post("/job", payload);
@@ -79,5 +79,10 @@ export const getUserSelectListing = async( payload: {role: UserRole}) => {
 
 export const assignReviewer = async (payload: AssignReviewerPayload) => {
     const res = await api.patch("/applied-job/assign-reviewer", payload);
+    return res.data;
+}
+
+export const getAssignedJob = async () => {
+    const res = await api.get("/applied-job/assigned-job");
     return res.data;
 }
