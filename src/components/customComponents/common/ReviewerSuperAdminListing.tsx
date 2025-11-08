@@ -7,7 +7,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { deleteAdmin, getAdminListing, promoteReviewer, updateAdminStatus } from "@/service/apis"
+import { getAdminListing, promoteReviewer, updateAdminStatus } from "@/service/apis"
 import { useProfileStore } from "@/store/profile"
 import type { CustomError } from "@/types/error"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
