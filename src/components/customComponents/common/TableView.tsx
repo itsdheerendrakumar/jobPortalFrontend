@@ -2,10 +2,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 
 interface TableViewProps {
     headers: string[]
-    data: (string | number)[][]
+    data: TableData
     action: React.ReactNode[]
+    actionLabel?: string
 }
-export function TableView({headers, data, action}: TableViewProps) {
+export function TableView({headers, data, action, actionLabel}: TableViewProps) {
     return (
         <Table className="bg-white">
             <TableHeader>
@@ -13,7 +14,7 @@ export function TableView({headers, data, action}: TableViewProps) {
                     {headers.map((header) => (
                         <TableHead key={header}>{header}</TableHead>
                     ))}
-                    <TableHead>Action</TableHead>
+                    <TableHead>{actionLabel ?? "Action"}</TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>

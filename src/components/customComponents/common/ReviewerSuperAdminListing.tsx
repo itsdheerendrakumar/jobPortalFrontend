@@ -76,7 +76,7 @@ export function ReviewerSuperAdminListing({ headers }: AdminTableProps) {
                         <TableCell>{user?.email}</TableCell>
                         <TableCell>{user?.phone}</TableCell>
                         <TableCell>{user?.country}</TableCell>
-                        <TableCell>{format(user?.createdAt, "dd-MM-yyyy")}</TableCell>
+                        <TableCell>{user?.createdAt ? format(user?.createdAt, "dd-MM-yyyy") : ""}</TableCell>
                         <TableCell>{user?.status === "active" ?
                             <span className="text-success">Active</span> :
                             <span className="text-destructive">Inactive</span>}

@@ -78,6 +78,30 @@ interface JobDetailData extends JobListingData {
   skills: string;
 }
 
+interface AdminAppliedJobListingData {
+    createdAt: string
+    _id: string
+    jobId: {
+        jobTitle: string
+        category: string
+        deadline: string
+    },
+    userId: {
+        name: string
+    }
+}
+interface UserSelectData {
+    label: string
+    value: string
+}
+
+type TableData = (string | number)[][]
+
+interface AssignReviewerPayload {
+    docId: string
+    reviewerId: string
+}
+
 type LoginResponse = ApiResponse<LoginData>
 type ProfileResponse = ApiResponse<ProfileData>
 type NewAdminResponse = ApiResponse<{}>
@@ -86,3 +110,5 @@ type AdminReviewerListingResponse = ApiResponse<IAdminUserDetails[]>
 type EmptyDataResponse = ApiResponse<{}>
 type JobListingResponse = ApiResponse<JobListingData[]>
 type JobDetailResponse = ApiResponse<JobDetailData>
+type AdminAppliedJobListing = ApiResponse<AdminAppliedJobListingData[]>
+type UserSelectDataResponse = ApiResponse<UserSelectData[]>

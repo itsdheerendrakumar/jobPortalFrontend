@@ -70,3 +70,14 @@ export const getAppliedJobs = async () => {
     const res = await api.get("/applied-job");
     return res.data;
 }
+
+export const getUserSelectListing = async( payload: {role: UserRole}) => {
+    const searchParams = new URLSearchParams(payload).toString();
+    const res = await api.get(`/user/select-listing?${searchParams}`);
+    return res.data;
+}
+
+export const assignReviewer = async (payload: AssignReviewerPayload) => {
+    const res = await api.patch("/applied-job/assign-reviewer", payload);
+    return res.data;
+}
