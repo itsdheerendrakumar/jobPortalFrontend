@@ -27,7 +27,7 @@ export function JobPage() {
     const deadline = new Date(data?.data?.deadline);
     const today = new Date();
     if(isLoading) return <FullPageLoding />
-    if(isError) return <ShowError message={error?.message}/>
+    if(isError) return <ShowError message={error?.response?.data?.message}/>
     if(isSuccess && !data?.data?._id) return <NoDataFound />
 
     return (
