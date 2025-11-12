@@ -12,9 +12,11 @@ import type { CustomError } from "@/types/error";
 import { Label } from "@radix-ui/react-label";
 import { useQuery } from "@tanstack/react-query";
 import { Eye, User } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export function Home() {
 
+    const navigate = useNavigate()
     const { data, isLoading } = useMetrics();
     const assignedJobQuery = useQuery<AssignedJobResponse, CustomError>({
         queryKey: ["assignedJob"],
@@ -54,62 +56,72 @@ export function Home() {
             </div>
             <div className="p-4">
                 {assignedJobQuery.isLoading && <div className="mt-4 mx-auto p-4 flex justify-center items-center"><ButtonLoading /></div>}
-                {assignedJobQuery?.isSuccess && assignedJobQuery?.data?.data?.length === 0 && 
-                    <NoDataFound message="No assigned job found."/>
+                {assignedJobQuery?.isSuccess && assignedJobQuery?.data?.data?.applicantDetail?.length === 0 &&
+                    <NoDataFound message="No assigned job found." />
                 }
-                {assignedJobQuery.isError && <ShowError message={assignedJobQuery?.error?.response?.data?.message}/>}
-                {assignedJobQuery.isSuccess && assignedJobQuery?.data?.data?.length > 0  && assignedJobQuery?.data?.data.map(value =>(
-                    <Card key={value?._id}>          
-                        <CardContent className="grid grid-cols-2 gap-4">
+                {assignedJobQuery.isError && <ShowError message={assignedJobQuery?.error?.response?.data?.message} />}
+                {assignedJobQuery.isSuccess && assignedJobQuery?.data?.data?.applicantDetail?.length > 0 &&
+                    <Card className="m-auto w-fit lg:min-w-[600px]">
+                        <CardContent>
                             <div>
                                 <div className="flex gap-4 justify-between items-center">
                                     <h2 className="text-lg font-semibold">Job Details</h2>
-                                    <Button variant="outline"><Eye size={16}/></Button>
+                                    <Button variant="outline" onClick={() => navigate(`/job/${assignedJobQuery?.data?.data?.jobDetails?._id}`)}><Eye size={16} /></Button>
                                 </div>
                                 <Divider />
                                 <div className="flex justify-between gap-2.5">
-                                    <span>{value?.jobId?.jobTitle}</span>
-                                    <span>{value?.jobId?.companyName}</span>
+                                    <span>{assignedJobQuery?.data?.data?.jobDetails?.jobTitle}</span>
+                                    <span>{assignedJobQuery?.data?.data?.jobDetails?.companyName}</span>
                                 </div>
 
                                 <div className="flex justify-between gap-2.5 mt-4">
                                     <div>
                                         <span>Education: </span>
-                                        <span className="bg-green-200 text-green-700 font-semibold px-3 py-1 rounded-md">{value?.jobId?.education}</span>
+                                        <span className="bg-green-200 text-green-700 font-semibold px-3 py-1 rounded-md">{assignedJobQuery?.data?.data?.jobDetails?.education}</span>
                                     </div>
 
                                     <div>
                                         <span>Experience: </span>
-                                        <span className="bg-green-200 text-green-700 font-semibold px-3 py-1 rounded-md">{value?.jobId?.experience}</span>
+                                        <span className="bg-green-200 text-green-700 font-semibold px-3 py-1 rounded-md">{assignedJobQuery?.data?.data?.jobDetails?.experience}</span>
                                     </div>
                                 </div>
 
                                 <div className="mt-4">
                                     <span>Skills: </span>
-                                    {value?.jobId?.skills?.split(",")?.map((skill, ind) =>  
+                                    {assignedJobQuery?.data?.data?.jobDetails?.skills?.split(",")?.map((skill, ind) =>
                                         <span className="bg-green-200 text-green-700 font-semibold px-3 py-1 rounded-md" key={ind}>{skill}</span>
                                     )}
                                 </div>
                             </div>
-                            <div>
-                                <div className="flex gap-4 justify-between items-center">
-                                    <h2 className="text-lg font-semibold">User Details</h2>
-                                    <Button variant="outline"><Eye size={16}/></Button>
-                                </div>
-                                <Divider />
-                            </div>
-                            <div className="col-span-full flex flex-col gap-3">
-                                <Label>Reason</Label>
-                                <Textarea />
-                            </div>
-                            <div className="col-span-full [&>button]:cursor-pointer flex gap-4">
-                                <Button variant="outline">Accept</Button>
-                                <Button variant="destructive">Reject</Button>
-                            </div>
+
                         </CardContent>
                     </Card>
-                    ))
                 }
+                <div className="flex flex-col gap-2.5 mt-4">
+                    {assignedJobQuery.isSuccess && assignedJobQuery?.data?.data?.applicantDetail?.length > 0 &&
+                        assignedJobQuery?.data?.data?.applicantDetail?.map((aplnt, ind) => (
+                            <Card key={ind}>
+                                <CardContent className="flex flex-col gap-2.5">
+                                    <div>
+                                        <div className="flex gap-4 justify-between items-center">
+                                            <h2 className="text-lg font-semibold">User Details</h2>
+                                            <Button variant="outline"><Eye size={16} /></Button>
+                                        </div>
+                                        <Divider />
+                                    </div>
+                                    <div className="col-span-full flex flex-col gap-2.5">
+                                        <Label>Reason</Label>
+                                        <Textarea />
+                                    </div>
+                                    <div className="col-span-full [&>button]:cursor-pointer flex gap-4 mt-2.5">
+                                        <Button variant="outline" size="lg">Accept</Button>
+                                        <Button variant="destructive" size="lg">Reject</Button>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        ))
+                    }
+                </div>
             </div>
         </>
     )

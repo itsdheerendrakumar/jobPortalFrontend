@@ -103,6 +103,17 @@ interface AssignReviewerPayload {
 }
 
 interface AssignedJobData {
+   appliedDates: string[]
+   documentIds: string[]
+   applicantDetail: []
+   jobDetails: {
+    _id: string
+    jobTitle: string
+    companyName: string
+    education: string
+    experience: number;
+    skills: string
+  }
   _id: string
   jobId: {
     _id: string
@@ -130,4 +141,4 @@ type JobListingResponse = ApiResponse<JobListingData[]>
 type JobDetailResponse = ApiResponse<JobDetailData>
 type AdminAppliedJobListing = ApiResponse<AdminAppliedJobListingData[]>
 type UserSelectDataResponse = ApiResponse<UserSelectData[]>
-type AssignedJobResponse = ApiResponse<AssignedJobData[]>
+type AssignedJobResponse = ApiResponse<AssignedJobData>
