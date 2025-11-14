@@ -1,5 +1,5 @@
 import { JobPage } from "@/pages/common/JobPage";
-import { TypeUserDetail } from "@/pages/common/userDetail";
+import { TypeUserDetail } from "@/pages/common/UserDetail";
 import { Home } from "@/pages/reviwers/Home";
 
 export const reviewerRoutes = [
