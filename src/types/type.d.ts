@@ -105,7 +105,7 @@ interface AssignReviewerPayload {
 interface AssignedJobData {
    appliedDates: string[]
    documentIds: string[]
-   applicantDetail: []
+   applicantDetail: {name: string, status: "active" | "inactive", createdAt: string, _id: string}[]
    jobDetails: {
     _id: string
     jobTitle: string

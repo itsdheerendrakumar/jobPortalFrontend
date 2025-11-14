@@ -86,3 +86,8 @@ export const getAssignedJob = async () => {
     const res = await api.get("/applied-job/assigned-job");
     return res.data;
 }
+
+export const getTypeUserById = async (id: string) => {
+    const res = await api.get(`/user/user/${id}`);
+    return res.data;
+}

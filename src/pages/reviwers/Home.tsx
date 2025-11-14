@@ -11,6 +11,7 @@ import { getAssignedJob } from "@/service/apis";
 import type { CustomError } from "@/types/error";
 import { Label } from "@radix-ui/react-label";
 import { useQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
 import { Eye, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -105,9 +106,23 @@ export function Home() {
                                     <div>
                                         <div className="flex gap-4 justify-between items-center">
                                             <h2 className="text-lg font-semibold">User Details</h2>
-                                            <Button variant="outline"><Eye size={16} /></Button>
+                                            <Button variant="outline" onClick={() => navigate(`/user/${aplnt?._id}`)}><Eye size={16} /></Button>
                                         </div>
                                         <Divider />
+                                    </div>
+                                    <div className="border px-2 py-3 flex gap-4 flex-wrap">
+                                        <div>
+                                            <span className="font-semibold">Name: </span><span>{aplnt?.name}</span>                       
+                                        </div>
+                                        <div>
+                                            <span className="font-semibold">Status: </span>
+                                            <span className={`px-3 py-1 rounded-md ${aplnt?.status === "active" ? "bg-green-200 text-green-700" : "bg-red-200 text-red-700"}`}>
+                                                {aplnt?.status}
+                                            </span>
+                                        </div>
+                                         <div>
+                                            <span className="font-semibold">Joined Date: </span><span>{format(aplnt?.createdAt, "dd-MM-yyyy")}</span>                       
+                                        </div>
                                     </div>
                                     <div className="col-span-full flex flex-col gap-2.5">
                                         <Label>Reason</Label>
