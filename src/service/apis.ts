@@ -91,3 +91,8 @@ export const getTypeUserById = async (id: string) => {
     const res = await api.get(`/user/user/${id}`);
     return res.data;
 }
+
+export const uploadProfile = async (formData: FormData) => {
+    const res = await api.post("/user/profile", formData);
+    return res.data;
+}

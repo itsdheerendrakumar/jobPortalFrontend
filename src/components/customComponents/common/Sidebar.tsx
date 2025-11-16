@@ -3,11 +3,30 @@ import { Divider } from "./Divider";
 import { Link, NavLink } from "react-router-dom";
 import { useProfileStore } from "@/store/profile";
 import { adminEndPoints, commonEndPoints } from "@/constants/user";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { getProfile } from "@/service/apis";
+import type { CustomError } from "@/types/error";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { User } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { UserProfile } from "@/pages/users/Profile";
 
 export function Sidebar() {
+    const [isOpen, setIsOpen] = useState(false);
+    const {name, role, logout, updateProfile} = useProfileStore();
+    const {data} = useQuery<ProfileResponse, CustomError>({
+    queryKey: ["profile"],
+    queryFn: () => getProfile(),
+    refetchOnWindowFocus: false
+  })
 
-    const {name, role, logout} = useProfileStore();
-  
+  useEffect(() => {
+    if(data)
+      updateProfile(data.data.name, data.data.imageUrl || "", data.data.role)
+  }, [data])
+
+  const handleIsOpen = () => setIsOpen(pre => !pre)
     return (
         <div className="flex flex-col gap-2.5  justify-between h-full boreder-solid border-sidebar-ring">
             <div className="flex flex-col gap-2.5">
@@ -15,15 +34,21 @@ export function Sidebar() {
                     <Link to="/"><span className="text-lg">jobPortal</span></Link>
                     <Divider />
                 </div>
-                <div className="flex justify-between items-center gap-2.5">
-                    <span>Welcome</span>
-                    <span className="text-ellipsis max-w-[50%]">{name}</span>
-                </div>
+                <Button 
+                    variant="link" 
+                    className="flex justify-center items-center gap-2.5 bg-transparent"
+                    onClick={handleIsOpen}
+                >
+                    <Avatar>
+                        <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                        <AvatarFallback><User size={16}/></AvatarFallback>
+                    </Avatar>
+                </Button>
                 {commonEndPoints.map((path) => (
                     <NavLink
                         key={path.label}
                         to={path.endPoint}
-                        className={({isActive}) => isActive ? "px-2 rounded-md hover:bg-blue-600 hover:text-white bg-blue-400" : "px-2 rounded-md hover:bg-red-500"}
+                        className={({isActive}) => `${isActive ? "px-2 rounded-md hover:bg-blue-600 hover:text-white bg-blue-400" : "px-2 rounded-md hover:bg-red-500"} text-center`}
                     >
                         {path.label}
                     </NavLink>
@@ -39,6 +64,21 @@ export function Sidebar() {
                 ))}
             </div>
             <Button className="w-full" onClick={logout}>Logout</Button>
+
+            {role === "user" && 
+                <Dialog
+                    open={isOpen}
+                    onOpenChange={handleIsOpen}
+                >
+                    <DialogContent className="overflow-y-auto h-full">
+                    <DialogHeader>
+                        <DialogTitle>Profile</DialogTitle>
+                    </DialogHeader>
+                        <UserProfile />
+                    </DialogContent>
+
+                </Dialog>
+            }
         </div>
     )
 }

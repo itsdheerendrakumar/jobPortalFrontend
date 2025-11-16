@@ -28,7 +28,7 @@ export function Layout() {
             <div 
             ref={mobileRef} 
             className={`absolute ${showSidebar ? "fixed left-4 top-0 bottom-0 p-2" : "-translate-x-full"} 
-                z-11 bg-white sm:hidden transition-transform h-full`}
+                z-11 bg-white sm:hidden transition-transform h-full min-w-[200px]`}
             >
                 <Sidebar />
             </div>

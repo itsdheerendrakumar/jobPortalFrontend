@@ -16,13 +16,14 @@ import type { CustomError } from "@/types/error";
 import { createNewUser } from "@/service/apis";
 import { toast } from "sonner";
 import { ButtonLoading } from "./customComponents/common/Loader";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 interface SignupProps {
     isCreateAdmin?: boolean
 }
 export function Signup({ isCreateAdmin }: SignupProps) {
 
+    const navigate = useNavigate();
     const [isTypePassword, setIsTypePassword] = useState(true);
     const {role} = useProfileStore();
     const queryClient = useQueryClient();
@@ -50,7 +51,9 @@ export function Signup({ isCreateAdmin }: SignupProps) {
         onSuccess:(data) => {
             toast.success(data?.message)
             reset();
-            queryClient.invalidateQueries({queryKey: ["admin-listing", "super-admin-metrics"]})
+            queryClient.invalidateQueries({queryKey: ["admin-listing", "super-admin-metrics"]});
+            if(!role)
+                navigate("/login")
         },
         onError: (err) => toast.error(err?.response?.data?.message)
     })
