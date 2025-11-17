@@ -96,3 +96,10 @@ export const uploadProfile = async (formData: FormData) => {
     const res = await api.post("/user/profile", formData);
     return res.data;
 }
+
+export const getProfilePicture = async () => {
+    const res = await api.get("/user/profile", {responseType: "blob"});
+    const profileUrl = URL.createObjectURL(res.data)
+    console.log(profileUrl);
+    return profileUrl
+}

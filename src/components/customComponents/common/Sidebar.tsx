@@ -3,9 +3,9 @@ import { Divider } from "./Divider";
 import { Link, NavLink } from "react-router-dom";
 import { useProfileStore } from "@/store/profile";
 import { adminEndPoints, commonEndPoints } from "@/constants/user";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { getProfile } from "@/service/apis";
+import { getProfile, getProfilePicture } from "@/service/apis";
 import type { CustomError } from "@/types/error";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { User } from "lucide-react";
@@ -14,16 +14,20 @@ import { UserProfile } from "@/pages/users/Profile";
 
 export function Sidebar() {
     const [isOpen, setIsOpen] = useState(false);
-    const {name, role, logout, updateProfile} = useProfileStore();
+    const {name, role, profileImage, logout, updateProfile} = useProfileStore();
     const {data} = useQuery<ProfileResponse, CustomError>({
     queryKey: ["profile"],
     queryFn: () => getProfile(),
     refetchOnWindowFocus: false
   })
+  const profilePictureMutaion = useMutation({
+    mutationFn: getProfilePicture,
+    onSuccess: (imageUrl) => updateProfile(data?.data.name!, imageUrl || "", data?.data.role!)
+  })
 
   useEffect(() => {
     if(data)
-      updateProfile(data.data.name, data.data.imageUrl || "", data.data.role)
+      profilePictureMutaion.mutate()
   }, [data])
 
   const handleIsOpen = () => setIsOpen(pre => !pre)
@@ -40,7 +44,7 @@ export function Sidebar() {
                     onClick={handleIsOpen}
                 >
                     <Avatar>
-                        <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                        <AvatarImage src={profileImage} alt="@shadcn" />
                         <AvatarFallback><User size={16}/></AvatarFallback>
                     </Avatar>
                 </Button>
