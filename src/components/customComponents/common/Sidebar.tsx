@@ -40,10 +40,10 @@ export function Sidebar() {
                 </div>
                 <Button 
                     variant="link" 
-                    className="flex justify-center items-center gap-2.5 bg-transparent"
+                    className="flex justify-center items-center bg-transparent cursor-pointer mb-2.5"
                     onClick={handleIsOpen}
                 >
-                    <Avatar>
+                    <Avatar className="h-14 w-14">
                         <AvatarImage src={profileImage} alt="@shadcn" />
                         <AvatarFallback><User size={16}/></AvatarFallback>
                     </Avatar>
@@ -73,8 +73,8 @@ export function Sidebar() {
                 <Dialog
                     open={isOpen}
                     onOpenChange={handleIsOpen}
-                >
-                    <DialogContent className="overflow-y-auto h-full">
+                >   
+                    <DialogContent className="overflow-y-auto max-h-screen">
                     <DialogHeader>
                         <DialogTitle>Profile</DialogTitle>
                     </DialogHeader>
