@@ -11,12 +11,13 @@ import { useProfileStore } from "@/store/profile";
 import type { CustomError } from "@/types/error";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Delete, Edit, Pencil, PencilOff, User } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
 
 export function UserProfile() {
     const {profileImage} = useProfileStore();
     const queryClient = useQueryClient();
+    const ref = useRef(null);
     const [preview, setPreview] = useState<string | undefined>("");
     const [profile, setProfile] = useState<File | null>(null);
     const [showBorderRed, setShowBorderRed] = useState(false);
@@ -24,6 +25,14 @@ export function UserProfile() {
     const [education, setEducation] = useState<Record<EducationKeys, string>[]>([{name: "", collegeName: "", percentage: "", passYear: ""}])
     const profileMutation = useMutation<any, CustomError, FormData>({
         mutationFn: (payload) => uploadProfile(payload),
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: ["profile"], exact: true});
+            queryClient.invalidateQueries({queryKey: ["profilePicture"], exact: true});
+            setProfile(null);
+            setPreview("");
+            if( ref?.current?.value )
+                ref.current.value = ""
+        },
         onError: (err) => {
             toast.error(err?.response?.data?.message)
         }
@@ -53,7 +62,7 @@ export function UserProfile() {
             return;
         }
         const lastEducation = education?.[education?.length - 1];
-        if(lastEducation.collegeName.trim() && lastEducation.name.trim() && lastEducation.passYear.trim() && lastEducation.percentage.trim())
+        if(lastEducation.collegeName.trim() && lastEducation.name.trim() && `${lastEducation.passYear}`.trim() && lastEducation.percentage.trim())
             setEducation(pre => ([...pre, {name: "", collegeName: "", percentage: "", passYear: ""}]))
             else {
             setShowBorderRed(true);
@@ -65,13 +74,13 @@ export function UserProfile() {
             return index === ind ? {...edu, [key]: value} : edu
         }))
     }
-    console.log(educationQuery.data?.data?.map(({_id, ...rest}) => rest))
+
     const handleEdit = () => {
         if(educationQuery.isSuccess)
-            setEducation(educationQuery.data?.data?.map(({_id, ...rest}) => rest));
+            setEducation(educationQuery.data?.data);
         setIsEdit(true);
     }
-    const isEducationExist = educationQuery.data?.data?.length! > 0;
+    const isEducationExist = educationQuery.data?.data?.length! > 0 || educationQuery.isLoading;
 
     return (
         <div className="">
@@ -90,6 +99,7 @@ export function UserProfile() {
                 </Button>
                 <Input 
                     type="file"
+                    ref={ref}
                     className="w-fit"
                     accept="image/png, image/jpeg"
                     onChange={(e) =>  {
@@ -153,14 +163,16 @@ export function UserProfile() {
                                 <TableHead>Passing Year</TableHead>
                             </TableRow>
                         </TableHeader>
-                        {educationQuery?.data?.data?.map((edu, ind) => (
-                            <TableRow key={ind}>
-                                <TableCell>{edu?.name}</TableCell>
-                                <TableCell>{edu?.collegeName}</TableCell>
-                                <TableCell>{edu?.percentage}</TableCell>
-                                <TableCell>{edu?.passYear}</TableCell>
-                            </TableRow>
-                        ))}
+                        <TableBody>
+                            {educationQuery?.data?.data?.map((edu, ind) => (
+                                <TableRow key={ind}>
+                                    <TableCell>{edu?.name}</TableCell>
+                                    <TableCell>{edu?.collegeName}</TableCell>
+                                    <TableCell>{edu?.percentage}</TableCell>
+                                    <TableCell>{edu?.passYear}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
                     </Table>
                 }
             </div>

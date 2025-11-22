@@ -4,7 +4,7 @@ import { Link, NavLink } from "react-router-dom";
 import { useProfileStore } from "@/store/profile";
 import { adminEndPoints, commonEndPoints } from "@/constants/user";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { getProfile, getProfilePicture } from "@/service/apis";
 import type { CustomError } from "@/types/error";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -14,21 +14,25 @@ import { UserProfile } from "@/pages/users/Profile";
 
 export function Sidebar() {
     const [isOpen, setIsOpen] = useState(false);
-    const {name, role, profileImage, logout, updateProfile} = useProfileStore();
-    const {data} = useQuery<ProfileResponse, CustomError>({
+    const {name, role, profileImage, logout, updateProfile, updateProfilePicture} = useProfileStore();
+    const {data, isSuccess} = useQuery<ProfileResponse, CustomError>({
     queryKey: ["profile"],
     queryFn: () => getProfile(),
     refetchOnWindowFocus: false
   })
-  const profilePictureMutaion = useMutation({
-    mutationFn: getProfilePicture,
-    onSuccess: (imageUrl) => updateProfile(data?.data.name!, imageUrl || "", data?.data.role!)
+  const {data: profileUrl, isSuccess: profleSucess} = useQuery({
+    queryKey: ["profilePicture"],
+    queryFn: getProfilePicture,
   })
-
   useEffect(() => {
-    if(data)
-      profilePictureMutaion.mutate()
+    if(isSuccess) {
+        updateProfile(data?.data.name!, data?.data.role!)
+    }
   }, [data])
+  useEffect(() => {
+    if(profleSucess)
+      updateProfilePicture(profileUrl || "")
+  }, [profileUrl])
 
   const handleIsOpen = () => setIsOpen(pre => !pre)
     return (
