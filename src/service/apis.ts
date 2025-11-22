@@ -103,3 +103,13 @@ export const getProfilePicture = async () => {
     console.log(profileUrl);
     return profileUrl
 }
+
+export const addEducation = async (payload: {education: Record<EducationKeys, string>[]}) => {
+    const res = await api.post("/user/education", payload);
+    return res.data;
+}
+export const getEducation = async () => {
+    const res = await api.get("/user/education");
+    return res.data;
+}
+

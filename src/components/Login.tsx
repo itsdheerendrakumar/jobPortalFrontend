@@ -85,8 +85,8 @@ export function Login() {
               <div className="flex flex-col gap-1">
                 <h2>User</h2>
                 <div className="flex gap-1 justfiy-between flex-wrap">
-                  <span className="text-red-400">dheerendra16kumar@gmail.com</span>
-                  <span className="text-green-400">dheerendraSuperAdmin</span>
+                  <span className="text-red-400">testUser@gmail.com</span>
+                  <span className="text-green-400">testUser</span>
                 </div>
               </div>
             </AccordionContent>

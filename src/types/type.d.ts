@@ -130,7 +130,7 @@ interface AssignedJobData {
 //   }
   createdAt: string
 }
-
+type EducationKeys = "name" | "collegeName" | "percentage" | "passYear"
 type LoginResponse = ApiResponse<LoginData>
 type ProfileResponse = ApiResponse<ProfileData>
 type NewAdminResponse = ApiResponse<{}>
@@ -142,3 +142,4 @@ type JobDetailResponse = ApiResponse<JobDetailData>
 type AdminAppliedJobListing = ApiResponse<AdminAppliedJobListingData[]>
 type UserSelectDataResponse = ApiResponse<UserSelectData[]>
 type AssignedJobResponse = ApiResponse<AssignedJobData>
+type EducationResponse = ApiResponse<Record<EducationKeys, "string">[]>
