@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import { Login } from "./components/Login";
 import { Signup } from "./components/Signup";
@@ -8,11 +8,17 @@ import { Toaster } from "sonner";
 import { useProfileStore } from "./store/profile";
 import { reviewerRoutes } from "./routes/reviewer";
 import { userRoutes } from "./routes/user";
+import { useEffect } from "react";
 
 export default function App() {
 
   const {role} = useProfileStore();
-
+  const navigate = useNavigate();
+  useEffect(() => {
+    if(!localStorage.getItem("accessToken")) {
+      navigate("/login");
+    }
+  }, [])
   return (
     <>
       <Toaster 
