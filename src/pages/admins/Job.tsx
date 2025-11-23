@@ -17,7 +17,7 @@ export function Job() {
   const handleIsOpen = () => {
     setIsOpen(!isOpen);
   }
-  const {data, isSuccess, isError, isLoading} = useQuery<JobListingResponse, CustomError>({
+  const {data} = useQuery<JobListingResponse, CustomError>({
     queryKey: ["jobListing"],
     queryFn: () => getJob()
   })

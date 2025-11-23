@@ -11,7 +11,7 @@ import { getAdminListing, updateAdminStatus } from "@/service/apis"
 import { useProfileStore } from "@/store/profile"
 import type { CustomError } from "@/types/error"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { ShieldCheck, ShieldOff, Trash } from "lucide-react"
+import { ShieldCheck, ShieldOff } from "lucide-react"
 import { toast } from "sonner"
 import { RowLoading } from "../common/Loader"
 
@@ -23,7 +23,7 @@ export function AdminReviewerTable({headers}: AdminTableProps) {
 
     const {role} = useProfileStore();
     const queryClient = useQueryClient();
-    const {data, isLoading,isFetching, isError, isSuccess} = useQuery<AdminReviewerListingResponse, CustomError>({
+    const {data, isLoading, isSuccess} = useQuery<AdminReviewerListingResponse, CustomError>({
         queryKey: ["admin-listing"],
         queryFn: () => getAdminListing(),
         staleTime: Infinity,
