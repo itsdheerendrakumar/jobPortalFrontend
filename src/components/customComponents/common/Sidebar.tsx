@@ -51,21 +51,18 @@ export function Sidebar() {
                 ))}
             </div>
             <Button className="w-full" onClick={logout}>Logout</Button>
+            <Dialog
+                open={isOpen}
+                onOpenChange={handleIsOpen}
+            >   
+                <DialogContent className="overflow-y-auto max-h-screen">
+                <DialogHeader>
+                    <DialogTitle>Profile</DialogTitle>
+                </DialogHeader>
+                    <UserProfile />
+                </DialogContent>
 
-            {role === "user" && 
-                <Dialog
-                    open={isOpen}
-                    onOpenChange={handleIsOpen}
-                >   
-                    <DialogContent className="overflow-y-auto max-h-screen">
-                    <DialogHeader>
-                        <DialogTitle>Profile</DialogTitle>
-                    </DialogHeader>
-                        <UserProfile />
-                    </DialogContent>
-
-                </Dialog>
-            }
+            </Dialog>
         </div>
     )
 }

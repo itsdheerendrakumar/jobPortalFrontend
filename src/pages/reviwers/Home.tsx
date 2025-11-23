@@ -57,86 +57,89 @@ export function Home() {
             </div>
             <div className="p-4">
                 {assignedJobQuery.isLoading && <div className="mt-4 mx-auto p-4 flex justify-center items-center"><ButtonLoading /></div>}
-                {assignedJobQuery?.isSuccess && assignedJobQuery?.data?.data?.applicantDetail?.length === 0 &&
+                {assignedJobQuery?.isSuccess && assignedJobQuery?.data?.data?.length === 0 &&
                     <NoDataFound message="No assigned job found." />
                 }
                 {assignedJobQuery.isError && <ShowError message={assignedJobQuery?.error?.response?.data?.message} />}
-                {assignedJobQuery.isSuccess && assignedJobQuery?.data?.data?.applicantDetail?.length > 0 &&
-                    <Card className="m-auto w-fit lg:min-w-[600px]">
-                        <CardContent>
-                            <div>
-                                <div className="flex gap-4 justify-between items-center">
-                                    <h2 className="text-lg font-semibold">Job Details</h2>
-                                    <Button variant="outline" onClick={() => navigate(`/job/${assignedJobQuery?.data?.data?.jobDetails?._id}`)}><Eye size={16} /></Button>
-                                </div>
-                                <Divider />
-                                <div className="flex justify-between gap-2.5">
-                                    <span>{assignedJobQuery?.data?.data?.jobDetails?.jobTitle}</span>
-                                    <span>{assignedJobQuery?.data?.data?.jobDetails?.companyName}</span>
-                                </div>
-
-                                <div className="flex justify-between gap-2.5 mt-4">
-                                    <div>
-                                        <span>Education: </span>
-                                        <span className="bg-green-200 text-green-700 font-semibold px-3 py-1 rounded-md">{assignedJobQuery?.data?.data?.jobDetails?.education}</span>
-                                    </div>
-
-                                    <div>
-                                        <span>Experience: </span>
-                                        <span className="bg-green-200 text-green-700 font-semibold px-3 py-1 rounded-md">{assignedJobQuery?.data?.data?.jobDetails?.experience}</span>
-                                    </div>
-                                </div>
-
-                                <div className="mt-4">
-                                    <span>Skills: </span>
-                                    {assignedJobQuery?.data?.data?.jobDetails?.skills?.split(",")?.map((skill, ind) =>
-                                        <span className="bg-green-200 text-green-700 font-semibold px-3 py-1 rounded-md" key={ind}>{skill}</span>
-                                    )}
-                                </div>
-                            </div>
-
-                        </CardContent>
-                    </Card>
-                }
-                <div className="flex flex-col gap-2.5 mt-4">
-                    {assignedJobQuery.isSuccess && assignedJobQuery?.data?.data?.applicantDetail?.length > 0 &&
-                        assignedJobQuery?.data?.data?.applicantDetail?.map((aplnt, ind) => (
-                            <Card key={ind}>
-                                <CardContent className="flex flex-col gap-2.5">
+                {assignedJobQuery.isSuccess && assignedJobQuery?.data?.data?.length > 0 &&
+                    assignedJobQuery?.data?.data?.map((detail) => (
+                        <div key={detail?._id} className="">
+                            <Card className="m-auto w-fit lg:min-w-[600px] mt-4">
+                                <CardContent>
                                     <div>
                                         <div className="flex gap-4 justify-between items-center">
-                                            <h2 className="text-lg font-semibold">User Details</h2>
-                                            <Button variant="outline" onClick={() => navigate(`/user/${aplnt?._id}`)}><Eye size={16} /></Button>
+                                            <h2 className="text-lg font-semibold">Job Details</h2>
+                                            <Button variant="outline" onClick={() => navigate(`/job/${detail?.jobDetails?.[0]?._id}`)}><Eye size={16} /></Button>
                                         </div>
                                         <Divider />
-                                    </div>
-                                    <div className="border px-2 py-3 flex gap-4 flex-wrap">
-                                        <div>
-                                            <span className="font-semibold">Name: </span><span>{aplnt?.name}</span>                       
+                                        <div className="flex justify-between gap-2.5">
+                                            <span>{detail?.jobDetails?.[0]?.jobTitle}</span>
+                                            <span>{detail?.jobDetails?.[0]?.companyName}</span>
                                         </div>
-                                        <div>
-                                            <span className="font-semibold">Status: </span>
-                                            <span className={`px-3 py-1 rounded-md ${aplnt?.status === "active" ? "bg-green-200 text-green-700" : "bg-red-200 text-red-700"}`}>
-                                                {aplnt?.status}
-                                            </span>
+
+                                        <div className="flex justify-between gap-2.5 mt-4">
+                                            <div>
+                                                <span>Education: </span>
+                                                <span className="bg-green-200 text-green-700 font-semibold px-3 py-1 rounded-md">{detail?.jobDetails?.[0]?.education}</span>
+                                            </div>
+
+                                            <div>
+                                                <span>Experience: </span>
+                                                <span className="bg-green-200 text-green-700 font-semibold px-3 py-1 rounded-md">{detail?.jobDetails?.[0]?.experience}</span>
+                                            </div>
                                         </div>
-                                         <div>
-                                            <span className="font-semibold">Joined Date: </span><span>{format(aplnt?.createdAt, "dd-MM-yyyy")}</span>                       
+
+                                        <div className="mt-4 flex flex-wrap gap-2.5 items-center">
+                                            <span>Skills: </span>
+                                            {detail?.jobDetails?.[0]?.skills?.split(",")?.map((skill, ind) =>
+                                                <span className="bg-green-200 text-green-700 font-semibold px-3 py-1 rounded-md" key={ind}>{skill}</span>
+                                            )}
                                         </div>
                                     </div>
-                                    <div className="col-span-full flex flex-col gap-2.5">
-                                        <Label>Reason</Label>
-                                        <Textarea />
-                                    </div>
-                                    <div className="col-span-full [&>button]:cursor-pointer flex gap-4 mt-2.5">
-                                        <Button variant="outline" size="lg">Accept</Button>
-                                        <Button variant="destructive" size="lg">Reject</Button>
-                                    </div>
+
                                 </CardContent>
                             </Card>
-                        ))
-                    }
-                </div>
+                            <div className="flex flex-col gap-2.5 mt-4">
+                                {assignedJobQuery.isSuccess && assignedJobQuery?.data?.data?.length > 0 &&
+                                    detail?.applicantDetail?.map((aplnt, ind) => (
+                                        <Card key={ind}>
+                                            <CardContent className="flex flex-col gap-2.5">
+                                                <div>
+                                                    <div className="flex gap-4 justify-between items-center">
+                                                        <h2 className="text-lg font-semibold">User Details</h2>
+                                                        <Button variant="outline" onClick={() => navigate(`/user/${aplnt?._id}`)}><Eye size={16} /></Button>
+                                                    </div>
+                                                    <Divider />
+                                                </div>
+                                                <div className="border px-2 py-3 flex gap-4 flex-wrap">
+                                                    <div>
+                                                        <span className="font-semibold">Name: </span><span>{aplnt?.name}</span>
+                                                    </div>
+                                                    <div>
+                                                        <span className="font-semibold">Status: </span>
+                                                        <span className={`px-3 py-1 rounded-md ${aplnt?.status === "active" ? "bg-green-200 text-green-700" : "bg-red-200 text-red-700"}`}>
+                                                            {aplnt?.status}
+                                                        </span>
+                                                    </div>
+                                                    <div>
+                                                        <span className="font-semibold">Joined Date: </span><span>{format(aplnt?.createdAt, "dd-MM-yyyy")}</span>
+                                                    </div>
+                                                </div>
+                                                <div className="col-span-full flex flex-col gap-2.5">
+                                                    <Label>Reason</Label>
+                                                    <Textarea />
+                                                </div>
+                                                <div className="col-span-full [&>button]:cursor-pointer flex gap-4 mt-2.5">
+                                                    <Button variant="outline" size="lg">Accept</Button>
+                                                    <Button variant="destructive" size="lg">Reject</Button>
+                                                </div>
+                                            </CardContent>
+                                        </Card>
+                                    ))
+                                }
+                            </div>
+                        </div>
+                    ))}
             </div>
         </>
     )
