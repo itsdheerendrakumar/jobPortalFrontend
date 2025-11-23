@@ -6,12 +6,12 @@ import { useOnClickOutside } from 'usehooks-ts'
 
 export function Layout() {
     const [showSidebar, setShowSidebar] = useState(false);
-    const mobileRef = useRef<RefObject<HTMLElement>>(null);
+    const mobileRef = useRef(null);
     
     const handleClickInside = () => {
         setShowSidebar(false)
     }
-    useOnClickOutside(mobileRef, handleClickInside)
+    useOnClickOutside(mobileRef as unknown as React.RefObject<HTMLElement>, handleClickInside)
 
 
     return(
