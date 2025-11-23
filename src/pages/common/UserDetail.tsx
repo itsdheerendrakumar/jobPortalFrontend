@@ -9,7 +9,7 @@ export function TypeUserDetail() {
         queryFn: () => getTypeUserById(id),
         enabled: id?.length > 0
     })
-    console.log(id)
+    console.log(id, userDetailQuery.isLoading)
     return(
         <div>user detail</div>
     )

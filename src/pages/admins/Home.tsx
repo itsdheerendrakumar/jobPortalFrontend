@@ -6,7 +6,6 @@ import { Plus, User } from "lucide-react"
 import { NewApplication } from "@/components/customComponents/admins/NewApplication";
 import { ReviewedApplication } from "@/components/customComponents/admins/ReviewedApplication";
 import { SelectedApplication } from "@/components/customComponents/admins/SelectedApplication";
-import { AdminReviewerTable } from "@/components/customComponents/superAdmin/AdminReviewerTable";
 import { adminHeaders } from "@/constants/user";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Signup } from "@/components/Signup";
@@ -18,7 +17,7 @@ export default function Home() {
 
   const [isOpen, setIsOpen] = useState(false);
   
-  const { data, isLoading, isError } = useMetrics();
+  const { data, isLoading } = useMetrics();
   const handleIsOpen = () => {
     setIsOpen(!isOpen);
   }

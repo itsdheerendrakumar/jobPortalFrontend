@@ -1,10 +1,10 @@
 import { Divider } from "@/components/customComponents/common/Divider";
-import { ButtonLoading, FullPageLoding } from "@/components/customComponents/common/Loader";
+import { ButtonLoading } from "@/components/customComponents/common/Loader";
 import { MetricCard } from "@/components/customComponents/common/MetricCard";
 import { NoDataFound } from "@/components/customComponents/common/NoDataFound";
 import { ShowError } from "@/components/customComponents/common/ShowError";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { useMetrics } from "@/hooks/useMetrics"
 import { getAssignedJob, reviewerResponseToAssignedJob } from "@/service/apis";

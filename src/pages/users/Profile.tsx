@@ -1,23 +1,22 @@
-import { Divider } from "@/components/customComponents/common/Divider";
 import { ButtonLoading } from "@/components/customComponents/common/Loader";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { addEducation, getEducation, uploadProfile } from "@/service/apis";
 import { useProfileStore } from "@/store/profile";
 import type { CustomError } from "@/types/error";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Delete, Edit, Pencil, PencilOff, User } from "lucide-react";
+import { Pencil, PencilOff, User } from "lucide-react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 
 export function UserProfile() {
     const {profileImage, role} = useProfileStore();
     const queryClient = useQueryClient();
-    const ref = useRef(null);
+    const ref = useRef<HTMLInputElement | null>(null);
     const [preview, setPreview] = useState<string | undefined>("");
     const [profile, setProfile] = useState<File | null>(null);
     const [showBorderRed, setShowBorderRed] = useState(false);
@@ -30,7 +29,7 @@ export function UserProfile() {
             queryClient.invalidateQueries({queryKey: ["profilePicture"], exact: true});
             setProfile(null);
             setPreview("");
-            if( ref?.current?.value )
+            if( ref?.current?.value! )
                 ref.current.value = ""
         },
         onError: (err) => {

@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { Sidebar } from "./customComponents/common/Sidebar";
 import { Menu } from "lucide-react";
-import { useRef, useState, type RefObject } from "react";
+import { useRef, useState } from "react";
 import { useOnClickOutside } from 'usehooks-ts'
 
 export function Layout() {
