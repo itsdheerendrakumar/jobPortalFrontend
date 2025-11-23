@@ -12,7 +12,7 @@ import { useMetrics } from "@/hooks/useMetrics";
 import { ReviewerSuperAdminListing } from "@/components/customComponents/common/ReviewerSuperAdminListing"
 
 export default function Home() {
-  const {data, isLoading, isError} = useMetrics();
+  const {data, isLoading} = useMetrics();
   const [isOpen, setIsOpen] = useState(false);
   const handleIsOpen = () => {
     setIsOpen(!isOpen)

@@ -7,10 +7,10 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { getAdminListing, promoteReviewer, updateAdminStatus } from "@/service/apis"
+import { promoteReviewer } from "@/service/apis"
 import { useProfileStore } from "@/store/profile"
 import type { CustomError } from "@/types/error"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { MoveUp, ShieldCheck, ShieldOff, Trash } from "lucide-react"
 import { toast } from "sonner"
 import { RowLoading } from "./Loader"
