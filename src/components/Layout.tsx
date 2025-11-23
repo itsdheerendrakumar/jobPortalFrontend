@@ -3,13 +3,42 @@ import { Sidebar } from "./customComponents/common/Sidebar";
 import { Menu } from "lucide-react";
 import { useRef, useState, type RefObject } from "react";
 import { useOnClickOutside } from 'usehooks-ts'
-
+import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { getProfile, getProfilePicture } from "@/service/apis";
+import type { CustomError } from "@/types/error";
+import { useProfileStore } from "@/store/profile";
 
 export function Layout() {
-
+    const {updateProfile, updateProfilePicture} = useProfileStore();
     const [showSidebar, setShowSidebar] = useState(false);
     const mobileRef = useRef<RefObject<HTMLElement>>(null);
-
+    const isToken = !!localStorage.getItem("accessToken");
+      const {data, isSuccess} = useQuery<ProfileResponse, CustomError>({
+      queryKey: ["profile"],
+      queryFn: () => getProfile(),
+      refetchOnWindowFocus: false,
+      enabled: isToken,
+      staleTime: Infinity,
+      gcTime: Infinity
+    })
+    const {data: profileUrl, isSuccess: profleSucess} = useQuery({
+      queryKey: ["profilePicture"],
+      queryFn: getProfilePicture,
+      refetchOnWindowFocus: false,
+      staleTime: Infinity,
+      gcTime: Infinity,
+      enabled: isToken
+    })
+    useEffect(() => {
+      if(isSuccess) {
+          updateProfile(data?.data.name!, data?.data.role!)
+      }
+    }, [data])
+    useEffect(() => {
+      if(profleSucess)
+        updateProfilePicture(profileUrl || "")
+    }, [profileUrl])
     const handleClickInside = () => {
         setShowSidebar(false)
     }

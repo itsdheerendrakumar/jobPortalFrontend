@@ -3,10 +3,7 @@ import { Divider } from "./Divider";
 import { Link, NavLink } from "react-router-dom";
 import { useProfileStore } from "@/store/profile";
 import { adminEndPoints, commonEndPoints } from "@/constants/user";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { use, useEffect, useState } from "react";
-import { getProfile, getProfilePicture } from "@/service/apis";
-import type { CustomError } from "@/types/error";
+import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { User } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -14,25 +11,7 @@ import { UserProfile } from "@/pages/users/Profile";
 
 export function Sidebar() {
     const [isOpen, setIsOpen] = useState(false);
-    const {name, role, profileImage, logout, updateProfile, updateProfilePicture} = useProfileStore();
-    const {data, isSuccess} = useQuery<ProfileResponse, CustomError>({
-    queryKey: ["profile"],
-    queryFn: () => getProfile(),
-    refetchOnWindowFocus: false
-  })
-  const {data: profileUrl, isSuccess: profleSucess} = useQuery({
-    queryKey: ["profilePicture"],
-    queryFn: getProfilePicture,
-  })
-  useEffect(() => {
-    if(isSuccess) {
-        updateProfile(data?.data.name!, data?.data.role!)
-    }
-  }, [data])
-  useEffect(() => {
-    if(profleSucess)
-      updateProfilePicture(profileUrl || "")
-  }, [profileUrl])
+    const {role, profileImage, logout} = useProfileStore();
 
   const handleIsOpen = () => setIsOpen(pre => !pre)
     return (
