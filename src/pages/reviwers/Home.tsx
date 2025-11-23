@@ -7,22 +7,36 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { useMetrics } from "@/hooks/useMetrics"
-import { getAssignedJob } from "@/service/apis";
+import { getAssignedJob, reviewerResponseToAssignedJob } from "@/service/apis";
 import type { CustomError } from "@/types/error";
 import { Label } from "@radix-ui/react-label";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { Eye, User } from "lucide-react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export function Home() {
-
+    const [currentId, setCurrentId] = useState<string | null>(null);
+    const [reason, setReason] = useState("");
     const navigate = useNavigate()
     const { data, isLoading } = useMetrics();
     const assignedJobQuery = useQuery<AssignedJobResponse, CustomError>({
         queryKey: ["assignedJob"],
         queryFn: getAssignedJob
     })
+
+    const reviewerResponseMutation = useMutation<EmptyDataResponse, CustomError, ReviewerResponseToAssignedJobPayload>({
+        mutationFn: (payload) => reviewerResponseToAssignedJob(payload),
+        onSuccess: () => {
+            assignedJobQuery.refetch();
+        },
+        onError: (err) => {
+            toast.error(err?.response?.data?.message)
+        }
+    })
+
     return (
         <>
             <div className="p-4">
@@ -126,12 +140,44 @@ export function Home() {
                                                     </div>
                                                 </div>
                                                 <div className="col-span-full flex flex-col gap-2.5">
-                                                    <Label>Reason</Label>
-                                                    <Textarea />
+                                                    <Label>Reason<span className="text-destructive">*</span></Label>
+                                                    <Textarea
+                                                        placeholder="Enter reason with minimum 10 characters"
+                                                        value={currentId === detail?.documentIds?.[ind] ? reason : ""}
+                                                        onChange={(e) => setReason(e.target.value)}
+                                                        onFocus={() => {
+                                                            if(currentId !== detail?.documentIds?.[ind]){
+                                                                setCurrentId(detail?.documentIds?.[ind]);
+                                                                setReason("");
+                                                            }
+                                                        }}
+                                                    />
                                                 </div>
                                                 <div className="col-span-full [&>button]:cursor-pointer flex gap-4 mt-2.5">
-                                                    <Button variant="outline" size="lg">Accept</Button>
-                                                    <Button variant="destructive" size="lg">Reject</Button>
+                                                    <Button 
+                                                        variant="outline" 
+                                                        size="lg" 
+                                                        disabled={reviewerResponseMutation.isPending || currentId !== detail?.documentIds?.[ind]}
+                                                        onClick={() => reviewerResponseMutation.mutate({
+                                                            docId: detail?.documentIds?.[ind],
+                                                            reason,
+                                                            reviewerStatus: "selected"
+                                                        })}
+                                                    >
+                                                        Accept
+                                                    </Button>
+                                                    <Button 
+                                                        variant="destructive" 
+                                                        size="lg" 
+                                                        disabled={reviewerResponseMutation.isPending || currentId !== detail?.documentIds?.[ind]}
+                                                        onClick={() => reviewerResponseMutation.mutate({
+                                                            docId: detail?.documentIds?.[ind],
+                                                            reason,
+                                                            reviewerStatus: "rejected"
+                                                        })}
+                                                    >
+                                                        Reject
+                                                    </Button>
                                                 </div>
                                             </CardContent>
                                         </Card>

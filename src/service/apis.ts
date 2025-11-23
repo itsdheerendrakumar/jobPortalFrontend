@@ -113,3 +113,8 @@ export const getEducation = async () => {
     return res.data;
 }
 
+export const reviewerResponseToAssignedJob = async (payload:ReviewerResponseToAssignedJobPayload) => {
+    const res = await api.patch("/applied-job/assigned-job", payload);
+    return res.data;
+}
+

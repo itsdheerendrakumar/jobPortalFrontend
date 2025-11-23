@@ -21,12 +21,16 @@ export  function NewJob() {
   const queryClient = new QueryClient();
   const jobMutation = useMutation<any, CustomError, JobForm>({
     mutationFn: (payload) => createJob(payload),
-    onSuccess: () => queryClient.invalidateQueries({queryKey: ["jobListing"], exact: true})
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ["jobListing"], exact: true});
+      reset();
+  }
   })
   const {
     register,
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = useForm<JobForm>({
     resolver: yupResolver(jobSchema),

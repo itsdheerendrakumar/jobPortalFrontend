@@ -130,6 +130,12 @@ interface AssignedJobData {
 //   }
   createdAt: string
 }
+interface ReviewerResponseToAssignedJobPayload {
+    docId: string
+    reviewerStatus: "selected" | "rejected"
+    reason: string
+}
+
 type EducationKeys = "name" | "collegeName" | "percentage" | "passYear"
 type LoginResponse = ApiResponse<LoginData>
 type ProfileResponse = ApiResponse<ProfileData>
