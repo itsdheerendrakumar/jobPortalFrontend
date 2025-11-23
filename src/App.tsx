@@ -9,16 +9,45 @@ import { useProfileStore } from "./store/profile";
 import { reviewerRoutes } from "./routes/reviewer";
 import { userRoutes } from "./routes/user";
 import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import type { CustomError } from "./types/error";
+import { getProfile, getProfilePicture } from "./service/apis";
 
 export default function App() {
 
-  const {role} = useProfileStore();
+  const {role, updateProfile, updateProfilePicture} = useProfileStore();
   const navigate = useNavigate();
   useEffect(() => {
     if(!localStorage.getItem("accessToken")) {
       navigate("/login");
     }
   }, [])
+  const isToken = !!localStorage.getItem("accessToken");
+      const {data, isSuccess} = useQuery<ProfileResponse, CustomError>({
+      queryKey: ["profile"],
+      queryFn: () => getProfile(),
+      refetchOnWindowFocus: false,
+      enabled: isToken,
+      staleTime: Infinity,
+      gcTime: Infinity
+    })
+    const {data: profileUrl, isSuccess: profleSucess} = useQuery({
+      queryKey: ["profilePicture"],
+      queryFn: getProfilePicture,
+      refetchOnWindowFocus: false,
+      staleTime: Infinity,
+      gcTime: Infinity,
+      enabled: isToken
+    })
+    useEffect(() => {
+      if(isSuccess) {
+          updateProfile(data?.data.name!, data?.data.role!)
+      }
+    }, [data])
+    useEffect(() => {
+      if(profleSucess)
+        updateProfilePicture(profileUrl || "")
+    }, [profileUrl])
   return (
     <>
       <Toaster 
