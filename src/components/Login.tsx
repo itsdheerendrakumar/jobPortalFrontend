@@ -20,12 +20,30 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
-
+type AutoKeys = "superAdmin" | "admin" | "reviewer" | "user"
+const autoCredentials: Record<AutoKeys, {email: string, password: string}> = {
+  superAdmin: {
+    email: "dheerendra16kumar@gmail.com",
+    password: "dheerendraSuperAdmin"
+  },
+  admin: {
+    email: "dk16btechcs@gmail.com",
+    password: "dkAdmin"
+  },
+  reviewer: {
+    email: "testReviewer@gmail.com",
+    password: "testReviewer"
+  },
+  user: {
+    email: "testUser@gmail.com",
+    password: "testUser"
+  },
+}
 export function Login() {
 
   const [isTypePassword, setIsTypePassword] = useState(true);
   const queryClient = useQueryClient()
-  const { control, handleSubmit, formState: { errors }, } = useForm({
+  const { control, handleSubmit,setValue, formState: { errors }, } = useForm({
     defaultValues: {
       email: "",
       password: "",
@@ -50,6 +68,10 @@ export function Login() {
   const onSubmit: SubmitHandler<ILogin> = (data) => {
     loginResponse.mutate(data);
   }
+  const handleAutoCredentital = (type: AutoKeys) => {
+    setValue("email", autoCredentials[type].email);
+    setValue("password", autoCredentials[type].password);
+  }
 
   return (
     <div className="flex items-center flex-col justify-center h-screen">
@@ -57,38 +79,19 @@ export function Login() {
         <Accordion type="single" collapsible className="px-4">
           <AccordionItem value="item-1">
             <AccordionTrigger>Credentials</AccordionTrigger>
-            <AccordionContent className="[&_h2]:text-lg [&_h2]:text-gray-500">
-              <div className="flex flex-col gap-1">
-                <h2>Super Admin</h2>
-                <div className="flex gap-1 justfiy-between flex-wrap">
-                  <span className="text-red-400">dheerendra16kumar@gmail.com</span>
-                  <span className="text-green-400">dheerendraSuperAdmin</span>
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <h2>Admin</h2>
-                <div className="flex gap-1 justfiy-between flex-wrap">
-                  <span className="text-red-400">dk16btechcs@gmail.com</span>
-                  <span className="text-green-400">dkAdmin</span>
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <h2>Reviewer</h2>
-                <div className="flex gap-1 justfiy-between flex-wrap">
-                  <span className="text-red-400">dheerendra16kumar@gmail.com</span>
-                  <span className="text-green-400">dheerendraSuperAdmin</span>
-                </div>
-
-              </div>
-              <div className="flex flex-col gap-1">
-                <h2>User</h2>
-                <div className="flex gap-1 justfiy-between flex-wrap">
-                  <span className="text-red-400">testUser@gmail.com</span>
-                  <span className="text-green-400">testUser</span>
-                </div>
-              </div>
+            <AccordionContent className="flex gap-2.5 flex-wrap [&>*]:bg-chart-2/60 [&>*]:hover:bg-chart-2/80">
+              <Button onClick={() => handleAutoCredentital("superAdmin")}>
+                Super Admin
+              </Button>
+              <Button onClick={() => handleAutoCredentital("admin")}>
+                Admin
+              </Button>
+              <Button onClick={() => handleAutoCredentital("reviewer")}>
+                Reviewer
+              </Button>
+              <Button onClick={() => handleAutoCredentital("user")}>
+                User
+              </Button>
             </AccordionContent>
           </AccordionItem>
         </Accordion>
