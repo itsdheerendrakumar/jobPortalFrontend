@@ -44,7 +44,7 @@ export function Sidebar() {
                     <NavLink
                         key={path.label}
                         to={path.endPoint}
-                        className={({isActive}) => isActive ? "px-2 rounded-md hover:bg-blue-600 hover:text-white bg-blue-400" : "px-2 rounded-md hover:bg-red-500"}
+                        className={({isActive}) => isActive ? "px-2 rounded-md hover:bg-blue-600 hover:text-white bg-blue-400 text-center" : "px-2 rounded-md hover:bg-red-500 text-center"}
                     >
                         {path.label}
                     </NavLink>

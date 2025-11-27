@@ -135,6 +135,27 @@ interface ReviewerResponseToAssignedJobPayload {
     reviewerStatus: "selected" | "rejected"
     reason: string
 }
+interface ReviewedApplicationData {
+  _id: string;
+  reason: string;
+
+  reviewerDetail: {
+    name: string;
+    email: string;
+  };
+
+  applicantDetail: {
+    _id: string;
+    name: string;
+  };
+
+  jobDetails: {
+    companyName: string;
+    jobTitle: string;
+    jobId: string;
+  };
+}
+
 
 type EducationKeys = "name" | "collegeName" | "percentage" | "passYear"
 type LoginResponse = ApiResponse<LoginData>
@@ -149,3 +170,4 @@ type AdminAppliedJobListing = ApiResponse<AdminAppliedJobListingData[]>
 type UserSelectDataResponse = ApiResponse<UserSelectData[]>
 type AssignedJobResponse = ApiResponse<AssignedJobData[]>
 type EducationResponse = ApiResponse<Record<EducationKeys, "string">[]>
+type ReviewedApplicationResponse = ApiResponse<ReviewedApplicationData[]>

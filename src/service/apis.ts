@@ -118,3 +118,8 @@ export const reviewerResponseToAssignedJob = async (payload:ReviewerResponseToAs
     return res.data;
 }
 
+export const getReviewedApplications = async () => {
+    const res = await api.get("/applied-job/selected-application-by-reviewer");
+    return res.data;
+}
+
