@@ -11,6 +11,8 @@ interface ISignup extends ILogin {
 }
 type UserRole = "superAdmin" | "admin" | "reviewer" | "user" | ""
 
+type QueryKeys = "profile" | "profilePicture" | "education";
+
 interface IAdminUserDetails {
     _id: string
     name: string
@@ -33,7 +35,7 @@ interface LoginData  {
 interface ProfileData {
     name: string
     role: UserRole
-    imageUrl: string | null
+    resumePublicId: string
 }
 
 interface MetricsData {

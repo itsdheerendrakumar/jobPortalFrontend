@@ -13,3 +13,9 @@ export const jobCategory = [
     {label: "Sales", value: "sales"}, 
     {label: "Marketing", value: "marketing"}
 ];
+
+export const queryKeys: Record<QueryKeys, string> = {
+    profile: "profile",
+    profilePicture: "profilePicture",
+    education: "education",
+}
