@@ -123,3 +123,14 @@ export const getReviewedApplications = async () => {
     return res.data;
 }
 
+export const uploadResume = async (resumeData: FormData) => {
+    const res = await api.post("/user/resume", resumeData);
+    return res.data;
+}
+
+export const getUserResume = async (publicId: string) => {
+    const searchParams = new URLSearchParams({publicId}).toString();
+    const res = await api.get(`/user/resume?${searchParams}`);
+    return res.data;
+}
+

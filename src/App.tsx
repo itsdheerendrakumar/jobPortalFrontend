@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import type { CustomError } from "./types/error";
 import { getProfile, getProfilePicture } from "./service/apis";
+import { queryKeys } from "./constants";
 
 export default function App() {
 
@@ -24,7 +25,7 @@ export default function App() {
   }, [])
   const isToken = !!localStorage.getItem("accessToken");
       const {data, isSuccess} = useQuery<ProfileResponse, CustomError>({
-      queryKey: ["profile"],
+      queryKey: [queryKeys.profile],
       queryFn: () => getProfile(),
       refetchOnWindowFocus: false,
       enabled: isToken,
@@ -32,7 +33,7 @@ export default function App() {
       gcTime: Infinity
     })
     const {data: profileUrl, isSuccess: profleSucess} = useQuery({
-      queryKey: ["profilePicture"],
+      queryKey: [queryKeys.profilePicture],
       queryFn: getProfilePicture,
       refetchOnWindowFocus: false,
       staleTime: Infinity,
@@ -41,9 +42,13 @@ export default function App() {
     })
     useEffect(() => {
       if(isSuccess) {
-          updateProfile(data?.data.name!, data?.data.role!)
+          updateProfile(
+            data?.data.name!, 
+            data?.data.role!, 
+            data?.data?.role === "user" ? data?.data?.resumePublicId : ""
+          )
       }
-    }, [data])
+    }, [data, isSuccess])
     useEffect(() => {
       if(profleSucess)
         updateProfilePicture(profileUrl || "")

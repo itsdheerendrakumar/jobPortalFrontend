@@ -24,7 +24,6 @@ export function Sidebar() {
                 <Button 
                     variant="link" 
                     className="flex justify-center items-center bg-transparent cursor-pointer mb-2.5"
-                    onClick={handleIsOpen}
                 >
                     <Avatar className="h-14 w-14">
                         <AvatarImage src={profileImage} alt="@shadcn" />
@@ -50,7 +49,10 @@ export function Sidebar() {
                     </NavLink>
                 ))}
             </div>
-            <Button className="w-full" onClick={logout}>Logout</Button>
+            <div>
+                <Button className="w-full" onClick={handleIsOpen}>Setting</Button>
+                <Button className="w-full mt-4" onClick={logout}>Logout</Button>
+            </div>
             <Dialog
                 open={isOpen}
                 onOpenChange={handleIsOpen}
