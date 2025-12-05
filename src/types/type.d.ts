@@ -162,6 +162,20 @@ interface ResumeUrlData {
   url: string;
 }
 
+interface UserData {
+  _id: string
+  name: string
+  email: string
+  phone?: string | null
+  country?: string | null
+  status?: string | null
+  education?: Record<EducationKeys, "string">[]
+  createdAt?: string
+  resumeAssetId?: string | null
+  resumeUploadedDate?: string | null
+  resumeUrl?: string | null
+}
+
 
 type EducationKeys = "name" | "collegeName" | "percentage" | "passYear"
 type LoginResponse = ApiResponse<LoginData>
@@ -178,3 +192,4 @@ type AssignedJobResponse = ApiResponse<AssignedJobData[]>
 type EducationResponse = ApiResponse<Record<EducationKeys, "string">[]>
 type ReviewedApplicationResponse = ApiResponse<ReviewedApplicationData[]>
 type ResumeUrlResponse = ApiResponse<ResumeUrlData>
+type TypeUserDetailResponse = ApiResponse<UserData>
