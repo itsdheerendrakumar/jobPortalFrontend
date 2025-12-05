@@ -158,6 +158,10 @@ interface ReviewedApplicationData {
   };
 }
 
+interface ResumeUrlData {
+  url: string;
+}
+
 
 type EducationKeys = "name" | "collegeName" | "percentage" | "passYear"
 type LoginResponse = ApiResponse<LoginData>
@@ -173,3 +177,4 @@ type UserSelectDataResponse = ApiResponse<UserSelectData[]>
 type AssignedJobResponse = ApiResponse<AssignedJobData[]>
 type EducationResponse = ApiResponse<Record<EducationKeys, "string">[]>
 type ReviewedApplicationResponse = ApiResponse<ReviewedApplicationData[]>
+type ResumeUrlResponse = ApiResponse<ResumeUrlData>

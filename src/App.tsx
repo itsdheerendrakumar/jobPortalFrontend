@@ -13,6 +13,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { CustomError } from "./types/error";
 import { getProfile, getProfilePicture } from "./service/apis";
 import { queryKeys } from "./constants";
+import { FullPageLoding } from "./components/customComponents/common/Loader";
 
 export default function App() {
 
@@ -61,7 +62,7 @@ export default function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/" element={<Layout />}>
+        <Route path="/" element={!!role  ? <Layout /> : <FullPageLoding />}>
           {role === "superAdmin" && superAdminRoutes.map(({path, Page}) => (
             <Route key={path} path={path} element={<Page />} />
           ))}

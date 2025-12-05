@@ -73,7 +73,7 @@ export function UserProfile() {
         }
     })
 
-    const resumeUrlMutation = useMutation<any, CustomError, string>({
+    const resumeUrlMutation = useMutation<ResumeUrlResponse, CustomError, string>({
         mutationFn: (publicId) => getUserResume(publicId),
         onSuccess: (data) => {
             queryClient.invalidateQueries({queryKey: [queryKeys.profile]});
@@ -115,7 +115,7 @@ export function UserProfile() {
 
     return (
         <div className="">
-            <div className="flex justify-center items-center flex-col gap-2.5">
+            <div className="flex justify-center items-start sm:items-center flex-col gap-2.5">
                 <Avatar className="h-24 w-24">
                     <AvatarImage src={preview || profileImage} alt="@shadcn" />
                     <AvatarFallback><User size={16}/></AvatarFallback>
@@ -143,27 +143,27 @@ export function UserProfile() {
             {role === "user" &&
                 <>
                     <div>
-                    <div className="flex items-center gap-2.5 justify-between">
-                        <h2>Resume</h2>
-                        <Button variant="ghost" size="icon" disabled={!url}>
-                            <a href={url} target="_blank">View Existing</a>
+                        <div className="flex items-center gap-2.5 justify-between">
+                            <h2 className="text-lg font-semibold">Resume</h2>
+                            {/* <Button variant="ghost" size="icon" disabled={!url}> */}
+                                <a href={url} target="_blank">View Existing</a>
+                            {/* </Button> */}
+                        </div>
+                        <Input
+                            ref={resumeRef}
+                            type="file"
+                            accept=".pdf"
+                            onChange={(e) => setResume(e.target!?.files!?.[0])}
+                        />
+                        <Button 
+                            className=" mt-4 bg-chart-2 hover:bg-chart-2/85 cursor-pointer min-w-24"
+                            onClick={handleRsumeUpload} 
+                            disabled={resumeMutation.isPending || !resume}
+                        >
+                            Upload
                         </Button>
+                        <Separator className="my-2.5"/>
                     </div>
-                    <Input
-                        ref={resumeRef}
-                        type="file"
-                        accept=".pdf"
-                        onChange={(e) => setResume(e.target!?.files!?.[0])}
-                    />
-                    <Button 
-                        className=" mt-4 bg-chart-2 hover:bg-chart-2/85 cursor-pointer min-w-24"
-                        onClick={handleRsumeUpload} 
-                        disabled={resumeMutation.isPending || !resume}
-                    >
-                        Upload
-                    </Button>
-                    <Separator className="my-2.5"/>
-                </div>
                     <div>
                         <div className="flex justify-between items-center">
                             <span className="text-lg font-medium">Education</span> 
