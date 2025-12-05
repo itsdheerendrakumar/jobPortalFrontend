@@ -15,7 +15,7 @@ export function TypeUserDetail() {
     })
     if(userDetailQuery.isLoading) return <FullPageLoding />
     if(userDetailQuery.isError) return <ShowError message={userDetailQuery.error?.message} />
-    const user = userDetailQuery.data?.data;
+    const user = userDetailQuery.data?.data ?? {}
     return(
     <div className="min-h-screen bg-gray-50 flex items-start justify-center p-6">
       <div className="w-full max-w-4xl space-y-6">
@@ -70,7 +70,7 @@ export function TypeUserDetail() {
 
               {user.education && user.education.length > 0 ? (
                 <ul className="space-y-3">
-                  {user.education.map((edu, idx: number) => (
+                  {user?.education?.map((edu, idx: number) => (
                     <li
                       key={idx}
                       className="p-3 rounded-md border border-gray-100 bg-white shadow-sm"
