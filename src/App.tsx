@@ -62,24 +62,26 @@ export default function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/" element={!!role  ? <Layout /> : <FullPageLoding />}>
-          {role === "superAdmin" && superAdminRoutes.map(({path, Page}) => (
-            <Route key={path} path={path} element={<Page />} />
-          ))}
+        {!!role &&
+          <Route path="/" element={!!role  ? <Layout /> : <FullPageLoding />}>
+            {role === "superAdmin" && superAdminRoutes.map(({path, Page}) => (
+              <Route key={path} path={path} element={<Page />} />
+            ))}
 
-          {role === "admin" && adminRoutes.map(({path, Page}) => (
-            <Route key={path} path={path} element={<Page />} />
-          ))}
+            {role === "admin" && adminRoutes.map(({path, Page}) => (
+              <Route key={path} path={path} element={<Page />} />
+            ))}
 
-          {role === "reviewer" && reviewerRoutes.map(({path, Page}) => (
-            <Route key={path} path={path} element={<Page />} />
-          ))}
+            {role === "reviewer" && reviewerRoutes.map(({path, Page}) => (
+              <Route key={path} path={path} element={<Page />} />
+            ))}
 
-          {role === "user" && userRoutes.map(({path, Page}) => (
-            <Route key={path} path={path} element={<Page />} />
-          ))}
+            {role === "user" && userRoutes.map(({path, Page}) => (
+              <Route key={path} path={path} element={<Page />} />
+            ))}
 
-        </Route>
+          </Route>
+        }
       </Routes>
     </>
   )
