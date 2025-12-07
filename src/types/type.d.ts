@@ -166,14 +166,14 @@ interface UserData {
   _id: string
   name: string
   email: string
-  phone?: string | null
-  country?: string | null
-  status?: string | null
-  education?: Record<EducationKeys, "string">[]
-  createdAt?: string
-  resumeAssetId?: string | null
-  resumeUploadedDate?: string | null
-  resumeUrl?: string | null
+  phone: string 
+  country: string
+  status: string
+  education: {name: string, collegeName: string, percentage: string, passYear: string}[]
+  createdAt: string
+  resumeAssetId: string
+  resumeUploadedDate: string
+  resumeUrl: string
 }
 
 
