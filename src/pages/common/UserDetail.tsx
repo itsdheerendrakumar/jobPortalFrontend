@@ -11,7 +11,6 @@ export function TypeUserDetail() {
     const userDetailQuery = useQuery<TypeUserDetailResponse, CustomError>({
         queryKey: ["userDetail", id],
         queryFn: () => getTypeUserById(id),
-        enabled: id?.length > 0
     })
     if(userDetailQuery.isLoading) return <FullPageLoding />
     if(userDetailQuery.isError) return <ShowError message={userDetailQuery.error?.message} />
@@ -23,39 +22,39 @@ export function TypeUserDetail() {
         <Card className="shadow-lg">
           <CardHeader>
             <CardTitle className="text-xl md:text-2xl">
-              {user.name}
+              {user?.name}
             </CardTitle>
-            <p className="text-sm text-muted-foreground mt-1">{user.status ?? ""}</p>
+            <p className="text-sm text-muted-foreground mt-1">{user?.status ?? ""}</p>
           </CardHeader>
 
           <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <div className="flex justify-between">
                 <span className="text-sm text-gray-500">Email</span>
-                <span className="text-sm">{user.email}</span>
+                <span className="text-sm">{user?.email}</span>
               </div>
 
               <div className="flex justify-between">
                 <span className="text-sm text-gray-500">Phone</span>
-                <span className="text-sm">{user.phone ?? "—"}</span>
+                <span className="text-sm">{user?.phone ?? "—"}</span>
               </div>
 
               <div className="flex justify-between">
                 <span className="text-sm text-gray-500">Country</span>
-                <span className="text-sm">{user.country ?? "—"}</span>
+                <span className="text-sm">{user?.country ?? "—"}</span>
               </div>
 
               <div className="flex justify-between">
                 <span className="text-sm text-gray-500">Joined</span>
                 <span className="text-sm">
-                  {user.createdAt ? new Date(user.createdAt).toLocaleString() : "—"}
+                  {user?.createdAt ? new Date(user?.createdAt).toLocaleString() : "—"}
                 </span>
               </div>
 
-              {user.resumeUrl && (
+              {user?.resumeUrl && (
                 <div className="mt-3">
                   <a
-                    href={user.resumeUrl}
+                    href={user?.resumeUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-block"
@@ -68,9 +67,9 @@ export function TypeUserDetail() {
             <div>
               <h3 className="text-sm font-medium text-gray-700 mb-2">Education</h3>
 
-              {user.education && user.education.length > 0 ? (
+              {user?.education && user?.education.length > 0 ? (
                 <ul className="space-y-3">
-                  {user.education.map((edu, idx: number) => (
+                  {user?.education.map((edu, idx: number) => (
                     <li
                       key={idx}
                       className="p-3 rounded-md border border-gray-100 bg-white shadow-sm"
@@ -100,17 +99,17 @@ export function TypeUserDetail() {
             <CardHeader>
               <CardTitle className="text-lg">Resume Preview</CardTitle>
             </CardHeader>
-            {!user.resumeUrl &&
+            {!user?.resumeUrl &&
                 <CardContent>
                     <p className="text-sm text-gray-500">No resume uploaded.</p>
                 </CardContent>
             }
-            {user.resumeUrl &&
+            {user?.resumeUrl &&
                 <CardContent>
                 <div className="w-full h-[72vh] md:h-[80vh] rounded-md overflow-hidden border">
                     <iframe
-                    title={`${user.name} - resume`}
-                    src={user.resumeUrl}
+                    title={`${user?.name} - resume`}
+                    src={user?.resumeUrl}
                     className="w-full h-full"
                     />
                 </div>
