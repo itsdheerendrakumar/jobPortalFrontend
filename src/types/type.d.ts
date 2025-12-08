@@ -42,6 +42,7 @@ interface MetricsData {
     admin: number
     reviewer: number
     user: number
+    pendingApplications: number
 }
 interface AdminReviewerListingData {
   _id: string

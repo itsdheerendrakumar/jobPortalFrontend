@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 
 export function useReviewerListing() {
 
-    const {data, isSuccess, isLoading, isError, error} = useQuery<AdminReviewerListingResponse, CustomError>({
+    const {data, isSuccess, isFetching: isLoading, isError, error} = useQuery<AdminReviewerListingResponse, CustomError>({
         queryKey: ["reviewer-listing"],
         queryFn: getReviewerListing
     })
