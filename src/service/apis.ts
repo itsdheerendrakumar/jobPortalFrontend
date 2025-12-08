@@ -134,3 +134,12 @@ export const getUserResume = async (publicId: string) => {
     return res.data;
 }
 
+export const adminResponseToApplication = async (payload: AdminResponseToApplicationPayload) => {
+    const res = await api.patch("/applied-job/admin-response", payload);
+    return res.data;
+}
+export const getSelectedApplicationByAdmin = async () => {
+    const res = await api.get("/applied-job/selected-application-by-admin");
+    return res.data;
+}
+

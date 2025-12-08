@@ -176,6 +176,10 @@ interface UserData {
   resumeUrl: string
 }
 
+interface AdminResponseToApplicationPayload {
+    docId: string
+    adminStatus: "selected" | "rejected"
+}
 
 type EducationKeys = "name" | "collegeName" | "percentage" | "passYear"
 type LoginResponse = ApiResponse<LoginData>
