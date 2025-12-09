@@ -7,7 +7,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { promoteReviewer } from "@/service/apis"
+import { promoteReviewer, updateReviewerStatus } from "@/service/apis"
 import { useProfileStore } from "@/store/profile"
 import type { CustomError } from "@/types/error"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
@@ -39,13 +39,13 @@ export function ReviewerSuperAdminListing({ headers }: AdminTableProps) {
         onError: (err) => toast.error(err?.response?.data?.message)
     })
 
-    // const updateAdminStatusMutation = useMutation<EmptyDataResponse, CustomError, UpdateAdminStatusPayload>({
-    //     mutationFn: (payload) => updateAdminStatus(payload),
-    //     onSuccess: (data) => {
-    //         queryClient.invalidateQueries({ queryKey: ["admin-listing"], exact: true });
-    //         toast.success(data?.message)
-    //     }
-    // });
+    const updateReviwerStatusMutation = useMutation<EmptyDataResponse, CustomError, UpdateReviewerStatusPayload>({
+        mutationFn: (payload) => updateReviewerStatus(payload),
+        onSuccess: (data) => {
+            queryClient.invalidateQueries({ queryKey: ["reviewer-listing"], exact: true });
+            toast.success(data?.message)
+        }
+    });
 
     // const deleteAdminMutation = useMutation<EmptyDataResponse, CustomError, string>({
     //     mutationFn: (adminId) => deleteAdmin(adminId),
@@ -88,13 +88,13 @@ export function ReviewerSuperAdminListing({ headers }: AdminTableProps) {
                             {role === "admin" &&
                                 <>
                                     <Button
-                                        // disabled={updateAdminStatusMutation.isPending || deleteAdminMutation.isPending}
+                                        disabled={updateReviwerStatusMutation.isPending}
                                         variant="secondary"
                                         className="cursor-pointer"
-                                        // onClick={() => updateAdminStatusMutation.mutate({
-                                        //     adminId: admin?._id,
-                                        //     status: admin?.status === "active" ? "inactive" : "active"
-                                        // })}
+                                        onClick={() => updateReviwerStatusMutation.mutate({
+                                            reviewerId: user?._id,
+                                            status: user?.status === "active" ? "inactive" : "active"
+                                        })}
                                     >
                                         {user?.status === "active" ?
                                             <ShieldOff size={16} className="text-destructive" /> :
@@ -102,17 +102,9 @@ export function ReviewerSuperAdminListing({ headers }: AdminTableProps) {
                                         }
                                     </Button>
 
-                                    <Button
-                                        variant="secondary"
-                                        // disabled={updateAdminStatusMutation.isPending || deleteAdminMutation.isPending}
-                                        // onClick={() => deleteAdminMutation.mutate(admin?._id)}
-                                        className="cursor-pointer [&>*]:color-red-500"
-                                    >
-                                        <Trash size={16} className="text-destructive" />
-                                    </Button>
                                 </>
                             }
-                            {role === "superAdmin" && 
+                            {/* {role === "superAdmin" && 
                                 <Button
                                     disabled={promoteReviewerMutation.isPending}
                                     variant="secondary"
@@ -121,7 +113,7 @@ export function ReviewerSuperAdminListing({ headers }: AdminTableProps) {
                                 >
                                     <MoveUp className="text-success"/>
                                 </Button>
-                            }
+                            } */}
                         </TableCell>
                     </TableRow>
                 ))}

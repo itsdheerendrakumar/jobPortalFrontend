@@ -23,7 +23,6 @@ export const reviewerHeadersSuperAdmin = [
     "Country",	
     "Created At",	
     "Status",
-    "Promote To Admin",
 ]
 
 export const adminEndPoints = [

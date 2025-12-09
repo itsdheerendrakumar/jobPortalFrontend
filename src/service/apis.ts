@@ -30,6 +30,10 @@ export const updateAdminStatus = async (payload: UpdateAdminStatusPayload) => {
     const res = await api.patch("/user/admin-status", payload);
     return res.data;
 }
+export const updateReviewerStatus = async (payload: UpdateReviewerStatusPayload) => {
+    const res = await api.patch("/user/reviewer-status", payload);
+    return res.data;
+}
 
 // export const deleteAdmin = async (adminId: string) => {
 //     const res = await api.delete(`/user/admin/${adminId}`);

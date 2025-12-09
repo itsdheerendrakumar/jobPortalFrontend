@@ -60,6 +60,10 @@ interface UpdateAdminStatusPayload {
     status: "active" | "inactive"
     adminId: string
 }
+interface UpdateReviewerStatusPayload {
+    status: "active" | "inactive"
+    reviewerId: string
+}
 interface JobListingData {
     companyName: string
     createdAt: string 
