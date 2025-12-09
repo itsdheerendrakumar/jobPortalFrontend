@@ -14,6 +14,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { ShieldCheck, ShieldOff } from "lucide-react"
 import { toast } from "sonner"
 import { RowLoading } from "../common/Loader"
+import { format } from "date-fns"
 
 interface AdminTableProps {
     headers: string[]
@@ -68,7 +69,7 @@ export function AdminReviewerTable({headers}: AdminTableProps) {
                                 <TableCell>{admin?.email}</TableCell>
                                 <TableCell>{admin?.phone}</TableCell>
                                 <TableCell>{admin?.country}</TableCell>
-                                <TableCell>{admin?.createdAt}</TableCell>
+                                <TableCell>{format( admin?.createdAt, "dd-MM-yyyy")}</TableCell>
                                 <TableCell>{admin?.status === "active" ? 
                                     <span className="text-success">Active</span> : 
                                     <span className="text-destructive">Inactive</span>}
@@ -78,7 +79,7 @@ export function AdminReviewerTable({headers}: AdminTableProps) {
                                         [&>.active]:text-chart-2 [&>.inactive]:text-destructive`}
                                 >
                                     <Button 
-                                        disabled={updateAdminStatusMutation.isPending} 
+                                        disabled={updateAdminStatusMutation.isPending || admin?._id === "68f79cba2a178a0dc8fdfdbc"} 
                                         variant="secondary" 
                                         className="cursor-pointer"
                                         onClick={() => updateAdminStatusMutation.mutate({
