@@ -7,11 +7,11 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { promoteReviewer, updateReviewerStatus } from "@/service/apis"
+import { updateReviewerStatus } from "@/service/apis"
 import { useProfileStore } from "@/store/profile"
 import type { CustomError } from "@/types/error"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { MoveUp, ShieldCheck, ShieldOff, Trash } from "lucide-react"
+import { ShieldCheck, ShieldOff } from "lucide-react"
 import { toast } from "sonner"
 import { RowLoading } from "./Loader"
 import { useReviewerListing } from "@/hooks/useReviewerListing"
@@ -28,16 +28,16 @@ export function ReviewerSuperAdminListing({ headers }: AdminTableProps) {
     const { role } = useProfileStore();
     const queryClient = useQueryClient();
     const { data, isSuccess, isLoading, isError, error } = useReviewerListing();
-    const promoteReviewerMutation = useMutation<EmptyDataResponse, CustomError, string>({
-        mutationFn: (userId) => promoteReviewer(userId),
-        onSuccess: (data) => {
-            toast.success(data?.message);
-            queryClient.invalidateQueries({
-                queryKey: ["admin-listing", "reviewer-listing", "super-admin-metrics"]
-            })
-        },
-        onError: (err) => toast.error(err?.response?.data?.message)
-    })
+    // const promoteReviewerMutation = useMutation<EmptyDataResponse, CustomError, string>({
+    //     mutationFn: (userId) => promoteReviewer(userId),
+    //     onSuccess: (data) => {
+    //         toast.success(data?.message);
+    //         queryClient.invalidateQueries({
+    //             queryKey: ["admin-listing", "reviewer-listing", "super-admin-metrics"]
+    //         })
+    //     },
+    //     onError: (err) => toast.error(err?.response?.data?.message)
+    // })
 
     const updateReviwerStatusMutation = useMutation<EmptyDataResponse, CustomError, UpdateReviewerStatusPayload>({
         mutationFn: (payload) => updateReviewerStatus(payload),
@@ -46,14 +46,6 @@ export function ReviewerSuperAdminListing({ headers }: AdminTableProps) {
             toast.success(data?.message)
         }
     });
-
-    // const deleteAdminMutation = useMutation<EmptyDataResponse, CustomError, string>({
-    //     mutationFn: (adminId) => deleteAdmin(adminId),
-    //     onSuccess: (data) => {
-    //         queryClient.invalidateQueries({ queryKey: ["admin-listing"], exact: true });
-    //         toast.success(data?.message)
-    //     }
-    // })
 
     if (isLoading) return <RowLoading />
     if (isError) return <ShowError message={error?.response?.data?.message} />
