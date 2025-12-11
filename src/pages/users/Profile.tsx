@@ -80,7 +80,10 @@ export function UserProfile() {
             setUrl(data?.data?.url);
         }
     })
-    useEffect(() => resumeUrlMutation.mutate(resumePublicId!), [])
+    useEffect(() => {
+        if(role === "user" && resumePublicId)
+            resumeUrlMutation.mutate(resumePublicId!)
+    }, [role, resumePublicId])
 
     const handleRsumeUpload = () => {
         const formData = new FormData();
