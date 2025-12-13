@@ -1,6 +1,8 @@
 import { NewJob } from "@/components/customComponents/admins/NewJob";
 import { Divider } from "@/components/customComponents/common/Divider";
 import { JobCard } from "@/components/customComponents/common/JobCard";
+import { FullPageLoding } from "@/components/customComponents/common/Loader";
+import { ShowError } from "@/components/customComponents/common/ShowError";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { getJob } from "@/service/apis";
@@ -17,10 +19,14 @@ export function Job() {
   const handleIsOpen = () => {
     setIsOpen(!isOpen);
   }
-  const {data} = useQuery<JobListingResponse, CustomError>({
+  const {data, isError, isLoading, error} = useQuery<JobListingResponse, CustomError>({
     queryKey: ["jobListing"],
     queryFn: () => getJob()
   })
+
+  if(isLoading) return <FullPageLoding />
+  if(isError) return <ShowError message={error?.response?.data?.message} />
+
   return (
     <div>
       <div className="flex items-center justify-between p-4">
