@@ -11,7 +11,7 @@ export function JobCard({job}: JobCardProps) {
     return (
         <div className="relative">
             {isDisabled && 
-                <div className="absolute top-0 right-0 text-red-700 bg-red-200 px-2 py-1 rounded-md">
+                <div className="absolute top-0 right-0 text-red-700 bg-red-200 px-2 rounded-md">
                     Deadline Ended
                 </div>
             }
