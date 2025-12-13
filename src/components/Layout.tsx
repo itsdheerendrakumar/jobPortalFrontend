@@ -8,10 +8,10 @@ export function Layout() {
     const [showSidebar, setShowSidebar] = useState(false);
     const mobileRef = useRef(null);
     
-    const handleClickInside = () => {
+    const handleClickOutside = () => {
         setShowSidebar(false)
     }
-    useOnClickOutside(mobileRef as unknown as React.RefObject<HTMLElement>, handleClickInside)
+    useOnClickOutside(mobileRef as unknown as React.RefObject<HTMLElement>, handleClickOutside)
 
 
     return(
@@ -28,7 +28,7 @@ export function Layout() {
             className={`absolute ${showSidebar ? "fixed left-4 top-0 bottom-0 p-2" : "-translate-x-full"} 
                 z-11 bg-white sm:hidden transition-transform h-full min-w-[200px]`}
             >
-                <Sidebar />
+                <Sidebar closeSidebar={handleClickOutside}/>
             </div>
             <div className="ml-0 sm:ml-56 bg-accent min-h-[calc(100vh-1rem)] rounded-sm">
                 <Outlet />
