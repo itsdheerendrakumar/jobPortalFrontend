@@ -147,3 +147,7 @@ export const getSelectedApplicationByAdmin = async () => {
     return res.data;
 }
 
+export const updateJobDeadline = async (payload: ExtendDeadlinePayload) => {
+    const res = await api.patch("/job", payload);
+    return res.data;
+}

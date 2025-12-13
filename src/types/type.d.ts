@@ -75,7 +75,7 @@ interface JobListingData {
     maxSalary: number
     createdBy: string,
     vacancy: number
-    deadline
+    deadline: string
     _id: string
 }
 interface JobDetailData extends JobListingData {
@@ -184,6 +184,11 @@ interface UserData {
 interface AdminResponseToApplicationPayload {
     docId: string
     adminStatus: "selected" | "rejected"
+}
+
+interface ExtendDeadlinePayload {
+    jobId: string
+    newDeadline: string
 }
 
 type EducationKeys = "name" | "collegeName" | "percentage" | "passYear"

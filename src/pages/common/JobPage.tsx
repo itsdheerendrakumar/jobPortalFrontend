@@ -1,21 +1,28 @@
 import { Divider } from "@/components/customComponents/common/Divider";
-import { FullPageLoding } from "@/components/customComponents/common/Loader";
+import { ButtonLoading, FullPageLoding } from "@/components/customComponents/common/Loader";
 import { NoDataFound } from "@/components/customComponents/common/NoDataFound";
 import { ShowError } from "@/components/customComponents/common/ShowError";
-import { applyJob, getJobDetail } from "@/service/apis";
+import { applyJob, getJobDetail, updateJobDeadline } from "@/service/apis";
 import type { CustomError } from "@/types/error";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { BadgeIndianRupee, BicepsFlexed, BookOpenText, Clock4, Locate } from "lucide-react";
 import { useParams } from "react-router-dom"
 import {format} from "date-fns"
 import { useProfileStore } from "@/store/profile";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
+import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { DialogTitle } from "@radix-ui/react-dialog";
+import { toast } from "sonner";
 export function JobPage() {
-
+    const queryClient = useQueryClient()
     const {role} = useProfileStore();
     const {jobId=""} = useParams();
+    const [isOpen, setIsOpen] = useState(false);
+    const [newDeadline, setNewDeadline] = useState("");
     const {data, isSuccess, isLoading, isError, error,} = useQuery<JobDetailResponse, CustomError>({
-        queryKey: ["jobById"],
+        queryKey: ["jobById", jobId],
         queryFn: () => getJobDetail(jobId),
         enabled: jobId?.length > 0
     })
@@ -24,8 +31,27 @@ export function JobPage() {
         mutationFn: () => applyJob(jobId)
     })
 
-    const deadline = new Date(data?.data?.deadline);
+    const changeDeadlineMutation = useMutation<EmptyDataResponse, CustomError, ExtendDeadlinePayload>({
+        mutationFn: (payload) => updateJobDeadline(payload),
+        onSuccess: (data) => {
+            setIsOpen(false);
+            toast.success(data?.message);
+            queryClient.invalidateQueries({queryKey: ["jobById"]})
+        },
+        onError: (err) => {
+            toast.error(err?.response?.data?.message)
+        }
+    })
+
+    const deadline = new Date(data?.data?.deadline!);
     const today = new Date();
+
+    const handleOpen = () => {setIsOpen(pre => !pre)}
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        changeDeadlineMutation.mutate({newDeadline, jobId})
+    }
+
     if(isLoading) return <FullPageLoding />
     if(isError) return <ShowError message={error?.response?.data?.message}/>
     if(isSuccess && !data?.data?._id) return <NoDataFound />
@@ -92,7 +118,7 @@ export function JobPage() {
                     <div className="flex gap-3 items-center">
                         <h3 className="font-semibold flex gap-1 items-center"><Clock4 size={16}/> Deadline</h3>
                         <span className={`${deadline > today ? "bg-green-200 text-green-700" : "bg-red-200 text-red-700"} px-3 py-1 rounded-md`}>
-                            {format(data?.data?.deadline, "dd/MM/yyyy hh:mm a")}
+                            {format(data?.data?.deadline!, "dd/MM/yyyy hh:mm a")}
                         </span>
                     </div>
                 </div>
@@ -105,7 +131,26 @@ export function JobPage() {
                 >
                     Apply
                 </Button>}
-                {role === "admin" &&<Button>Extend Deadline</Button>}
+                {role === "admin" && <Button onClick={handleOpen}>Change Deadline</Button>}
+                <Dialog open={isOpen} onOpenChange={handleOpen}>
+                    <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle className="text-lg font-medium">Change Deadline</DialogTitle>
+                    </DialogHeader>
+                    <div>
+                        <form onSubmit={handleSubmit}>
+                            <Input type="date" required value={newDeadline} onChange={(e) => setNewDeadline(e.target.value)}/>
+                            <Button 
+                                type="submit"
+                                disabled={changeDeadlineMutation?.isPending}
+                                className="mt-4 bg-chart-2/30 text-chart-2/70 hover:bg-chart-2 hover:text-background"
+                            >
+                                {changeDeadlineMutation?.isPending ? <ButtonLoading /> : "Update"}
+                            </Button>
+                        </form>
+                    </div>
+                    </DialogContent>
+                </Dialog>
             </div>
         </div>
     )
