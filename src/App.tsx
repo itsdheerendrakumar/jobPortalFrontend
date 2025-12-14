@@ -16,7 +16,6 @@ import { queryKeys } from "./constants";
 import { FullPageLoding } from "./components/customComponents/common/Loader";
 
 export default function App() {
-
   const {role, updateProfile, updateProfilePicture} = useProfileStore();
   const navigate = useNavigate();
   useEffect(() => {
@@ -25,7 +24,7 @@ export default function App() {
     }
   }, [])
   const isToken = !!localStorage.getItem("accessToken");
-      const {data, isSuccess} = useQuery<ProfileResponse, CustomError>({
+      const {data, isSuccess, isLoading} = useQuery<ProfileResponse, CustomError>({
       queryKey: [queryKeys.profile],
       queryFn: () => getProfile(),
       refetchOnWindowFocus: false,
@@ -54,7 +53,10 @@ export default function App() {
     useEffect(() => {
       if(profleSucess)
         updateProfilePicture(profileUrl || "")
-    }, [profileUrl])
+    }, [profileUrl]);
+
+    if(isLoading && !role) return <FullPageLoding />
+
   return (
     <>
       <Toaster 
