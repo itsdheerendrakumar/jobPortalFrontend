@@ -6,7 +6,7 @@ import { applyJob, getJobDetail, updateJobDeadline } from "@/service/apis";
 import type { CustomError } from "@/types/error";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { BadgeIndianRupee, BicepsFlexed, BookOpenText, Clock4, Locate } from "lucide-react";
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import {format} from "date-fns"
 import { useProfileStore } from "@/store/profile";
 import { Button } from "@/components/ui/button";
@@ -16,7 +16,8 @@ import { Input } from "@/components/ui/input";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { toast } from "sonner";
 export function JobPage() {
-    const queryClient = useQueryClient()
+    const queryClient = useQueryClient();
+    const navigate = useNavigate();
     const {role} = useProfileStore();
     const {jobId=""} = useParams();
     const [isOpen, setIsOpen] = useState(false);
@@ -28,7 +29,15 @@ export function JobPage() {
     })
 
     const applyJobMutation = useMutation<EmptyDataResponse, CustomError>({
-        mutationFn: () => applyJob(jobId)
+        mutationFn: () => applyJob(jobId),
+        onSuccess: (data) => {
+            toast.success(data?.message);
+            queryClient.invalidateQueries({queryKey: ["appliedJobs"]});
+            navigate("/applications");
+        },
+        onError: (err) => {
+            toast.error(err?.response?.data?.message)
+        }
     })
 
     const changeDeadlineMutation = useMutation<EmptyDataResponse, CustomError, ExtendDeadlinePayload>({
