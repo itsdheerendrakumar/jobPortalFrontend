@@ -63,7 +63,7 @@ export function Home() {
                     loading={isLoading}
                 />
                 <MetricCard
-                    label="Total Pending Applications"
+                    label="Pending Applications (Total)"
                     value={data?.data?.pendingApplications ?? 0}
                     icon={<User />}
                     loading={isLoading}
