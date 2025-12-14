@@ -36,6 +36,7 @@ interface ProfileData {
     name: string
     role: UserRole
     resumePublicId: string
+    userId: string
 }
 
 interface MetricsData {
@@ -191,6 +192,21 @@ interface ExtendDeadlinePayload {
     newDeadline: string
 }
 
+interface AppliedJobsUserData {
+  jobId: {
+    _id: string;
+    jobTitle: string;
+    companyName: string;
+    jobType: string
+    location: string
+    deadline: string
+  };
+  createdAt: string
+  adminStatus: "pending" | "selected" | "rejected"
+  reviewerStatus: "pending" | "selected" | "rejected"
+}
+
+
 type EducationKeys = "name" | "collegeName" | "percentage" | "passYear"
 type LoginResponse = ApiResponse<LoginData>
 type ProfileResponse = ApiResponse<ProfileData>
@@ -207,3 +223,4 @@ type EducationResponse = ApiResponse<Record<EducationKeys, "string">[]>
 type ReviewedApplicationResponse = ApiResponse<ReviewedApplicationData[]>
 type ResumeUrlResponse = ApiResponse<ResumeUrlData>
 type TypeUserDetailResponse = ApiResponse<UserData>
+type AppliedJobListingUserResponse = ApiResponse<AppliedJobsUserData[]>

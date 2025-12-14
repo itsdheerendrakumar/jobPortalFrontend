@@ -32,3 +32,7 @@ export const adminEndPoints = [
 export const commonEndPoints = [
     {endPoint: "/", label: "Dashboard"},
 ]
+
+export const userEndPoints = [
+    {endPoint: "/applications", label: "Applications"},
+]

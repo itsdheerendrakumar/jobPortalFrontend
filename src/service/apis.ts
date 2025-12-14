@@ -151,3 +151,8 @@ export const updateJobDeadline = async (payload: ExtendDeadlinePayload) => {
     const res = await api.patch("/job", payload);
     return res.data;
 }
+
+export const getAppliedJobForUser = async () => {
+    const res = await api.get("/applied-job/user");
+    return res.data;
+}

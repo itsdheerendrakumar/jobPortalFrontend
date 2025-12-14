@@ -45,7 +45,8 @@ export default function App() {
       if(isSuccess) {
           updateProfile(
             data?.data.name!, 
-            data?.data.role!, 
+            data?.data.role!,
+            data?.data?.userId,
             data?.data?.role === "user" ? data?.data?.resumePublicId : ""
           )
       }

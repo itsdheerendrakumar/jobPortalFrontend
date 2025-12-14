@@ -2,9 +2,10 @@ import {create} from "zustand"
 interface Profile {
     name: string
     profileImage: string
-    role: UserRole
+    role: UserRole,
+    id: string
     resumePublicId?: string
-    updateProfile: (name: string, role: UserRole, resumePublicId?: string) => void
+    updateProfile: (name: string, role: UserRole, id: string, resumePublicId?: string) => void
     logout: () => void,
     updateProfilePicture: (profileImage: string) => void
 }
@@ -12,8 +13,9 @@ export const useProfileStore = create<Profile>((set) => ({
     name: "",
     profileImage: "",
     role: "",
-    updateProfile: (name, role, resumePublicId) => set((state) => (
-        {...state, name, role, ...(role === "user" && {resumePublicId})}
+    id: "",
+    updateProfile: (name, role, resumePublicId, id) => set((state) => (
+        {...state, name, role, id, ...(role === "user" && {resumePublicId})}
     )),
     updateProfilePicture: (profileImage) => set((state) => ({...state, profileImage})),
     logout: () => {

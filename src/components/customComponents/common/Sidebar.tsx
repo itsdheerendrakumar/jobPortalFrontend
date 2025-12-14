@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Divider } from "./Divider";
 import { Link, NavLink } from "react-router-dom";
 import { useProfileStore } from "@/store/profile";
-import { adminEndPoints, commonEndPoints } from "@/constants/user";
+import { adminEndPoints, commonEndPoints, userEndPoints } from "@/constants/user";
 import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { User } from "lucide-react";
@@ -41,6 +41,16 @@ export function Sidebar({closeSidebar}: {closeSidebar?: () => void}) {
                     </NavLink>
                 ))}
                 {(role === "admin") && adminEndPoints.map((path) => (
+                    <NavLink
+                        onClick={() => closeSidebar?.()}
+                        key={path.label}
+                        to={path.endPoint}
+                        className={({isActive}) => isActive ? "px-2 rounded-md hover:bg-blue-600 hover:text-white bg-blue-400 text-center" : "px-2 rounded-md hover:bg-red-500 text-center"}
+                    >
+                        {path.label}
+                    </NavLink>
+                ))}
+                {(role === "user") && userEndPoints.map((path) => (
                     <NavLink
                         onClick={() => closeSidebar?.()}
                         key={path.label}
