@@ -157,14 +157,16 @@ export function Signup({ isCreateAdmin }: SignupProps) {
                             </Button>
                         </div>
                     </form>
-                    <div className="flex justify-end mt-3">
-                        <Link
-                            to="/login"
-                            className="text-sm underline-offset-4 hover:underline"
-                        >
-                        Have account.
-                        </Link>
-                    </div>
+                    {!isCreateAdmin && 
+                        <div className="flex justify-end mt-3">
+                            <Link
+                                to="/login"
+                                className="text-sm underline-offset-4 hover:underline"
+                            >
+                            Have account.
+                            </Link>
+                        </div>
+                    }
                 </CardContent>
             </Card>
         </div>
