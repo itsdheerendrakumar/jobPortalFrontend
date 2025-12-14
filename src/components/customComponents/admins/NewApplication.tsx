@@ -7,6 +7,7 @@ import { NoDataFound } from "../common/NoDataFound";
 import { ShowError } from "../common/ShowError";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
+import { format } from "date-fns";
 const header = ["Applicant", "Job", "category", "Applied Date", "Deadline"];
 
 export function NewApplication() {
@@ -54,8 +55,8 @@ export function NewApplication() {
             value?.userId?.name, 
             value?.jobId?.jobTitle, 
             value?.jobId?.category, 
-            value?.createdAt,
-            value?.jobId?.deadline
+           format(value?.createdAt, "dd-MM-yyyy hh:mm a"),
+           format(value?.jobId?.deadline, "dd-MM-yyyy hh:mm a")        
         ])
 })
     
