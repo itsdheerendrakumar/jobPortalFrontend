@@ -39,10 +39,9 @@ export function Signup({ isCreateAdmin }: SignupProps) {
         resolver: yupResolver(signupSchema),
 
     });
-    console.log(errors)
+
     const onSubmit: SubmitHandler<ISignup> = async (data) => {
         const payload = role === "superAdmin" ? { ...data, deletePermission } : data;
-        console.log(payload)
         newUserMutation.mutate(payload);
     }
 
@@ -51,7 +50,11 @@ export function Signup({ isCreateAdmin }: SignupProps) {
         onSuccess:(data) => {
             toast.success(data?.message)
             reset();
-            queryClient.invalidateQueries({queryKey: ["admin-listing", "super-admin-metrics"]});
+            if(["admin", "superAdmin"].includes(role)) {
+                queryClient.invalidateQueries({queryKey: ["admin-listing"]});
+                queryClient.invalidateQueries({queryKey: ["super-admin-metrics"]});
+                queryClient.invalidateQueries({queryKey: ["reviewer-listing"]});
+            }
             if(!role)
                 navigate("/login")
         },
