@@ -80,7 +80,7 @@ export function ReviewerSuperAdminListing({ headers }: AdminTableProps) {
                             {role === "admin" &&
                                 <>
                                     <Button
-                                        disabled={updateReviwerStatusMutation.isPending}
+                                        disabled={updateReviwerStatusMutation.isPending || user?.email === "testReviewer@gmail.com"}
                                         variant="secondary"
                                         className="cursor-pointer"
                                         onClick={() => updateReviwerStatusMutation.mutate({
