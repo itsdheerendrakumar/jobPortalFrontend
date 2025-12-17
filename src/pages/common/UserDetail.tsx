@@ -106,13 +106,15 @@ export function TypeUserDetail() {
             }
             {user?.resumeUrl &&
                 <CardContent>
-                <div className="w-full rounded-md overflow-auto border">
+                  <div className="w-full h-[80vh] border rounded-md overflow-hidden">
                     <iframe
-                    title={`${user?.name} - resume`}
-                    src={user?.resumeUrl}
-                    className="w-full h-full"
+                      title={`${user?.name} - resume`}
+                      src={`https://docs.google.com/gview?url=${encodeURIComponent(
+                        user?.resumeUrl
+                      )}&embedded=true`}
+                      className="w-full h-full"
                     />
-                </div>
+                  </div>
                 </CardContent>
             }
           </Card>
