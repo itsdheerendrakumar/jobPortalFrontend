@@ -106,7 +106,7 @@ export function TypeUserDetail() {
             }
             {user?.resumeUrl &&
                 <CardContent>
-                <div className="w-full h-[72vh] md:h-[80vh] rounded-md overflow-hidden border">
+                <div className="w-full rounded-md overflow-auto border">
                     <iframe
                     title={`${user?.name} - resume`}
                     src={user?.resumeUrl}
